@@ -1,16 +1,13 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const router = express.Router();
-const db = require('./util/db');
-const { get } = require('./controllers/userController');
+const port = 3000;
+
+const testRoutes = require("./routes/testRoutes");
 
 app.use(express.json());
+app.use("/", testRoutes);
+const cors = require("cors");
+app.use(cors());
 
-// ✅ Koppel de router aan de app
-router.get('/get', get);
-app.use('/api', router); // hierdoor is je endpoint: /api/get
-
-// ✅ Start de server
-app.listen(5000, () => {
-  console.log('🚀 Server running on http://localhost:5000');
-});
+app.get("/", (req, res) => res.send(`App is running on ${port}`));
+app.listen(port, () => console.log(`Server running on port ${port}`));
