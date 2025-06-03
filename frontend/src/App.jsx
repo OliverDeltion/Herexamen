@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import { route } from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavigationBar from "./components/common/NavigationBar";
+import Footer from "./components/common/Footer";
 
 import "./App.css";
 
@@ -13,6 +14,8 @@ function App() {
 	return (
 		<>
 			<NavigationBar />
+			<Footer />
+
 			<div>
 				<a href="https://vite.dev" target="_blank">
 					<img src={viteLogo} className="logo" alt="Vite logo" />
