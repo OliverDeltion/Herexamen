@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import { route } from 'react-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { StudentDashboard } from './components/StudentDashboard'
+import { TeacherDashboard } from './components/TeacherDashboard'
+
 import './App.css'
 
 function App() {
