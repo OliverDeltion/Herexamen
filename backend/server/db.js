@@ -1,11 +1,13 @@
-const mariadb = require("mariadb");
+const mysql = require("mysql2/promise");
 
-const pool = mariadb.createPool({
+const pool = mysql.createPool({
   host: "localhost",
   user: "root",
-  password: "",
-  database: "AARdata",
+  password: "", // pas aan indien nodig
+  database: "aardata", // pas aan indien nodig
+  waitForConnections: true,
   connectionLimit: 10,
+  queueLimit: 0
 });
 
-module.exports = { pool };
+module.exports = pool;

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const testController = require("../controllers/testController");
 
-router.get("/users", testController.getUsers);
-router.get("/subjects", testController.getSubjects);
+router.post("/users", testController.getUsers);
+router.post("/subjects", testController.getSubjects);
 
 module.exports = router;
