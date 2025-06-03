@@ -2,16 +2,20 @@ const { pool } = require("../server/db");
 
 async function getUsers(req, res) {
   try {
-    const rows = await pool.query("SELECT * FROM users");
+    const [rows] = await pool.query("SELECT * FROM users");
     res.json(rows);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Fout bij ophalen van users" });
   }
 }
-
-async function fileUpload(req, res) {
+async function test(req, res) {
+  res.status(200).json({ error: "Fout bij ophalen van users" });
+  
+}
+async function handleUpload  (req, res)  {
   const file = req.file;
+
   if (!file) return res.status(400).json({ error: 'Geen bestand geüpload.' });
 
   try {
@@ -65,4 +69,4 @@ async function getSubjects(req, res) {
   }
 }
 
-module.exports = { getUsers, getSubjects, fileUpload};
+module.exports = { getUsers, getSubjects, handleUpload, test};
