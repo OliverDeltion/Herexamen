@@ -1,11 +1,14 @@
 const mariadb = require("mariadb");
 
 const pool = mariadb.createPool({
-  host: "localhost",
+    host: "localhost",
   user: "root",
-  password: "",
-  database: "AARdata",
+  password: "", // pas aan indien nodig
+  database: "aardata", // pas aan indien nodig
+  waitForConnections: true,
   connectionLimit: 10,
+  queueLimit: 0
 });
 
-module.exports = { pool };
+
+module.exports = {pool};
