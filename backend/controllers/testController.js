@@ -111,34 +111,41 @@ async function getStudentStats(req, res) {
 
 async function getAllStudentPercentages(req, res) {
   try {
-    const [rows] = await pool.query(`
-      SELECT
-        studentnummer,
-        SUM(aanwezigheid) AS totaal_aanwezig,
-        SUM(roosterminuten) AS totaal_rooster
-      FROM attendance
-      GROUP BY studentnummer
-    `);
+    const rows = await pool.query(`
+   SELECT 
+  studentnummer,
+  SUM(aanwezigheid) AS totaal_aanwezigheid,
+  SUM(roosterminuten) AS totaal_roosterminuten
+FROM 
+  attendance
+GROUP BY 
+  studentnummer;
+`
+    );
 
-    const result = rows.map((row) => {
-      const percentage = Math.round((row.totaal_aanwezig / row.totaal_rooster) * 1000) / 10;
-      return {
-        studentnummer: row.studentnummer,
+
+    console.log("Rows:", rows);;
+    const resultArray = Array.isArray(rows) ? rows : [rows];
+
+    let data = [];
+    console.log("Data: " + data);
+    for (let row of resultArray) {
+      const aanwezig = Number(row.totaal_aanwezigheid);
+      const rooster = Number(row.totaal_roosterminuten);
+
+      const percentage = Math.round((aanwezig / rooster) * 1000) / 10;
+      data.push({
         percentage,
-        categorie: bepaalCategorie(percentage)
-      };
-    });
-
-    // Sorteer op hoogste percentage
-    result.sort((a, b) => b.percentage - a.percentage);
-
-    res.json(result);
+        studentnummer: row.studentnummer,
+      });
+    }
+    console.log(data);
+    data.sort((a, b) => b.percentage - a.percentage);
+    res.json(data);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Fout bij ophalen van studentpercentages" });
   }
 }
-
-
 
 module.exports = { getUsers, getAttendance, handleUpload, test, getStudentStats, getAllStudentPercentages };
