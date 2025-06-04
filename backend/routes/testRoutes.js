@@ -9,5 +9,6 @@ const {
 router.get("/users", getUsers);
 router.get("/attendance", getAttendance);
 router.get("/students/:studentnummer/stats", getStudentStats);
+router.get("/students", getAllStudentPercentages);
 
 module.exports = router;
