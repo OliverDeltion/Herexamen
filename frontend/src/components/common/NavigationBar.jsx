@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Toevoegen
 import "./NavigationBar.css";
 import "./Buttons.css";
 
@@ -26,9 +27,9 @@ const Navbar = () => {
 					</a>
 				</div>
 				<div className="navbar__end">
-					<a className="navbar__button" href="#">
+					<Link className="navbar__button" to="/import">
 						Importeer Spreadsheet
-					</a>
+					</Link>
 				</div>
 
 				{/* als je hierop klikt, roep je toggleMenu aan */}
@@ -42,7 +43,7 @@ const Navbar = () => {
 			<div className={`navbar__mobile ${menuOpen ? "navbar__mobile--open" : ""}`}>
 				<a>Student</a>
 				<a>Docent</a>
-				<a>Importeer Spreadsheet</a>
+				<Link to="/import">Importeer Spreadsheet</Link>
 			</div>
 		</nav>
 	);

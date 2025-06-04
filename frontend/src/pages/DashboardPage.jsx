@@ -23,8 +23,9 @@ const DashboardPage = () => {
 	};
 
 	return (
-		<div>
+		<>
 			<NavigationBar />
+			
 			<div className="text-center">
 				{selectedRole === null && (
 					<div className="accounts">
@@ -70,9 +71,7 @@ const DashboardPage = () => {
 					</div>
 				</Modal>
 			</div>
-			<Footer />
-		</div>
-		
+		</>
 	);
 };
 
