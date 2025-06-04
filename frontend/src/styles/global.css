@@ -1,0 +1,84 @@
+/* src/global.css – Standaard styling voor hele website */
+
+:root {
+	/*kleurenpalet */
+	--accent-orange: rgb(245, 130, 32);
+	--accent-orange-light: rgb(255, 180, 100);
+	--primary-blue: #3366cc;
+	--primary-blue-hover: #0047ab;
+	--secondary-blue: #e6f0ff;
+	--light-gray: #f5f5f5;
+	--medium-gray: #cccccc;
+	--dark-gray: #333333;
+	--white: #ffffff;
+	--black: #000000;
+
+	/*container width */
+	--max-width: 1620px;
+
+	/*typography */
+	--font-family: "Segoe UI", sans-serif;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: var(--font-family);
+	font-size: 1rem;
+	color: var(--dark-gray);
+	background-color: var(--white);
+	line-height: 1.6;
+}
+
+h1 {
+	font-size: clamp(1.875rem, 2.5vw + 1rem, 3rem); /*30px tot 48px */
+	font-weight: bold;
+	color: var(--black);
+}
+
+h2 {
+	font-size: clamp(1.5rem, 2vw + 0.5rem, 2.25rem); /*24px tot 36px */
+	font-weight: bold;
+	color: var(--black);
+}
+
+h3 {
+	font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.75rem); /*20px tot 28px */
+	color: var(--dark-gray);
+}
+
+h4 {
+	font-size: clamp(1.125rem, 1vw + 0.5rem, 1.5rem); /*18 tot 24px */
+	color: var(--dark-gray);
+}
+
+h5 {
+	font-size: clamp(1rem, 0.8vw + 0.5rem, 1.25rem); /*16px tot 20px */
+	color: var(--dark-gray);
+}
+
+p {
+	font-size: clamp(0.8125rem, 0.5vw + 0.5rem, 1.125rem); /*13px tot 18px */
+	color: var(--dark-gray);
+}
+
+a {
+	color: var(--accent-orange);
+	text-decoration: none;
+	transition: text-decoration 0.2s ease;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: var(--white);
+}
+
+.container {
+	max-width: var(--max-width);
+	margin: 0 auto;
+	padding: 0 1rem;
+}

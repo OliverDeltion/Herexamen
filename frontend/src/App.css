@@ -1,0 +1,35 @@
+/* Dashboard layout */
+
+:root {
+	--accent-orange: rgb(245, 130, 32);
+	--primary-blue: #3366cc;
+	--secondary-blue: #e6f0ff;
+	--light-gray: #f5f5f5;
+	--medium-gray: #cccccc;
+	--dark-gray: #333333;
+	--white: #ffffff;
+	--black: #000000;
+}
+
+body {
+	margin: 0;
+	font-family: "Segoe UI, sans-serif";
+	background-color: var(--light-gray);
+	color: var(--dark-gray);
+}
+
+button {
+	cursor: pointer;
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+.container {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 2rem;
+	text-align: center;
+}
