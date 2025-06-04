@@ -21,7 +21,7 @@ async function setupDatabase() {
 
     for (let i = 0; i < 50; i++) {
       let uuid = uuidv4().toString();
-      let password = await bcrypt.hash(i.toString(), 12);
+      let password = await bcrypt.hash(i.toString(), 1);
       await pool.query(`
         INSERT INTO users (public_id, username, email, password)
         VALUES (?, ?, ?, ?)`,
@@ -75,6 +75,12 @@ async function setupDatabase() {
       )
     `);
     console.log("Attendance table created...");
+
+    await pool.query(`
+  INSERT INTO attendance (studentnummer, aanwezigheid, roosterminuten, week, jaar)
+  VALUES (?, ?, ?, ?, ?)`,
+  ['st5172541747', 4, 180, 22, 2025]
+);
 
     console.log("Database setup complete");
 

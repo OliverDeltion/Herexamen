@@ -10,9 +10,10 @@ const uploadRoutes = require('./routes/uploadRoutes');
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", uploadRoutes);
+app.use("/api",upload.single("file"), uploadRoutes);
 app.post('/upload', upload.single('file'), (req, res) => {
   console.log(req.file);
+
   res.send('File uploaded');
 });
 app.use("/api", testRoutes); // <-- belangrijk: nu beide onder /api

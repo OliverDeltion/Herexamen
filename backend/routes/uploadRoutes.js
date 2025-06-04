@@ -5,6 +5,6 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
 
-router.post("/upload",upload.single("file"), testController.fileUpload);
+router.post("/upload", testController.handleUpload);
 router.post("/test", testController.test);
 module.exports = router;
