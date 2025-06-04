@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import NavigationBar from "../components/common/NavigationBar";
+import Footer from "../components/common/Footer";
 import StudentDashboard from "../components/dashboard/StudentDashboard";
 import TeacherDashboard from "../components/dashboard/TeacherDashboard";
+
+//Styles
+import "../styles/global.css";
 
 import "../App.css";
 
@@ -19,7 +23,6 @@ const DashboardPage = () => {
 	return (
 		<div>
 			{<NavigationBar />}
-
 			<div className="text-center">
 				{selectedRole === "null" && (
 					<div className="accounts">
@@ -52,6 +55,7 @@ const DashboardPage = () => {
 					</div>
 				)}
 			</div>
+			<Footer />
 		</div>
 	);
 };
