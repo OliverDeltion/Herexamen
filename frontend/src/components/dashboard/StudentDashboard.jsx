@@ -4,7 +4,7 @@ import "./StudentDashboard.scss";
 const student = {
 	naam: "Jan Jansen",
 	studentNumber: "S1234567",
-	attendance: 310,
+	attendance: 330,
 	schedule: 400,
 	week: 23,
 	year: 2025,
@@ -12,13 +12,13 @@ const student = {
 };
 
 function getAttendanceColor(percentage) {
-    if (percentage === 100) return "color-perfect";
-    if (percentage >= 95) return "color-excellent";
-    if (percentage >= 80) return "color-goed";
-    if (percentage >= 65) return "color-redelijk";
-    if (percentage >= 50) return "color-onvoldoende";
-    if (percentage > 0) return "color-kritiek";
-    return "color-fail";
+    if (percentage === 100) return "perfect";
+    if (percentage >= 95) return "excellent";
+    if (percentage >= 80) return "goed";
+    if (percentage >= 65) return "redelijk";
+    if (percentage >= 50) return "onvoldoende";
+    if (percentage > 0) return "kritiek";
+    return "fail";
 }
 
 const StudentDashboard = () => {
@@ -32,6 +32,7 @@ const StudentDashboard = () => {
                     <img
                         src={student.profilePhoto}
                         alt="Profielfoto"
+                        className={`profile-border-${colorClass}`}
                     />
                 </div>
                 <h2>Student Dashboard</h2>
@@ -45,7 +46,8 @@ const StudentDashboard = () => {
                     <strong>Aanwezigheid (week):</strong> {student.attendance} min
                     {" = "}
                     <span style={{ fontWeight: "bold" }}>
-                        {percentage}%<span className={`attendance-dot ${colorClass}`}></span>
+                        {percentage}%
+                        <span className={`attendance-dot attendance-color-${colorClass}`}></span>
                     </span>
                 </p>
                 <p>

@@ -1,28 +1,3 @@
-$color-fail:        #8B0000;
-$color-kritiek:     #C0392B;
-$color-onvoldoende: #E67E22;
-$color-redelijk:    #F1C40F;
-$color-goed:        #27AE60;
-$color-excellent:   #2980B9;
-$color-perfect:     #00C3A5;
-
-.attendance-dot {
-  display: inline-block;
-  margin-left: 8px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  vertical-align: middle;
-  border: 2px solid #fff;
-  &.color-fail        { background: $color-fail; }
-  &.color-kritiek     { background: $color-kritiek; }
-  &.color-onvoldoende { background: $color-onvoldoende; }
-  &.color-redelijk    { background: $color-redelijk; }
-  &.color-goed        { background: $color-goed; }
-  &.color-excellent   { background: $color-excellent; }
-  &.color-perfect     { background: $color-perfect; }
-}
-
 .student-dashboard-container {
   display: flex;
   justify-content: center;
@@ -47,7 +22,42 @@ $color-perfect:     #00C3A5;
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #eee;
+    border: 3.5px solid;
   }
 }
+
+$color-fail:        #8B0000;
+$color-kritiek:     #C0392B;
+$color-onvoldoende: #E67E22;
+$color-redelijk:    #F1C40F;
+$color-goed:        #27AE60;
+$color-excellent:   #2980B9;
+$color-perfect:     #00C3A5;
+
+.attendance-dot {
+  display: inline-block;
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 2px solid #fff;
+}
+
+.attendance-color-fail        { background: $color-fail !important; }
+.attendance-color-kritiek     { background: $color-kritiek !important; }
+.attendance-color-onvoldoende { background: $color-onvoldoende !important; }
+.attendance-color-redelijk    { background: $color-redelijk !important; }
+.attendance-color-goed        { background: $color-goed !important; }
+.attendance-color-excellent   { background: $color-excellent !important; }
+.attendance-color-perfect     { background: $color-perfect !important; }
+
+.profile-border-fail        { border-color: $color-fail !important; }
+.profile-border-kritiek     { border-color: $color-kritiek !important; }
+.profile-border-onvoldoende { border-color: $color-onvoldoende !important; }
+.profile-border-redelijk    { border-color: $color-redelijk !important; }
+.profile-border-goed        { border-color: $color-goed !important; }
+.profile-border-excellent   { border-color: $color-excellent !important; }
+.profile-border-perfect     { border-color: $color-perfect !important; }
+
 
