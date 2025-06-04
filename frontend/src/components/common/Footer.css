@@ -1,4 +1,42 @@
+/* :root {
+	--accent-orange: rgb(245, 130, 32);
+	--accent-orange-light: rgb(255, 180, 100);
+} */
+
 .footer {
-	background-color: green;
-	min-width: 100%;
+	background-color: #f2f2f2;
+	padding: 2rem 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	text-align: left;
+}
+
+.footer__section {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.footer__section a {
+	color: var(--accent-orange);
+	/* color: #333; */
+	text-decoration: none;
+	font-size: 0.95rem;
+}
+
+.footer__section a:hover {
+	text-decoration: underline;
+}
+
+/* Desktop/tablet vanaf 768px: secties naast elkaar */
+@media screen and (min-width: 768px) {
+	.footer {
+		flex-direction: row;
+		justify-content: space-around;
+	}
+
+	.footer__section {
+		align-items: flex-start;
+	}
 }

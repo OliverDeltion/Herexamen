@@ -1,10 +1,16 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
+// in src/main.jsx of src/App.jsx
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./styles/global.css";
 import { route } from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavigationBar from "./components/common/NavigationBar";
 import Footer from "./components/common/Footer";
+import SpreadsheetButton from "./components/common/SpreadsheetButton";
+import FilterButton from "./components/common/FilterButton";
+import DownloadButton from "./components/common/DownloadButton";
 
 import "./App.css";
 
@@ -14,9 +20,10 @@ function App() {
 	return (
 		<>
 			<NavigationBar />
-			<Footer />
-
-			<div>
+			<DownloadButton />
+			<FilterButton />
+			<SpreadsheetButton />
+			{/* <div>
 				<a href="https://vite.dev" target="_blank">
 					<img src={viteLogo} className="logo" alt="Vite logo" />
 				</a>
@@ -31,7 +38,8 @@ function App() {
 					Edit <code>src/App.jsx</code> and save to test HMR
 				</p>
 			</div>
-			<p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+			<p className="read-the-docs">Click on the Vite and React logos to learn more</p> */}
+			<Footer />;
 		</>
 	);
 }
