@@ -1,0 +1,131 @@
+.teacherDashboard {
+}
+
+.teacherDashboard__start {
+}
+
+.teacherDashboard__groups {
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+}
+
+.teacherDashboard__group {
+	display: flex;
+	gap: 1rem;
+	padding: 0.5rem;
+	border-bottom: 1px solid black;
+	justify-content: space-around;
+}
+
+.teacherDashboard__end {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@media screen and (min-width: 850px) {
+	.teacherDashboard__group > *:not(:first-child) {
+		border-left: 1px solid #d3d3d3;
+		padding-left: 2.5rem;
+	}
+
+	.teacherDashboard__top {
+		display: flex;
+		gap: 2rem;
+		padding: 1rem;
+	}
+
+	.teacherDashboard__start {
+		width: 60%;
+	}
+	.teacherDashboard__end {
+		width: 40%;
+	}
+}
+
+/* Filter styling */
+
+.teacherDashboard__bottom {
+	margin: 1rem;
+}
+
+.teacherDashboard__filter {
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	/* margin-bottom: 1rem; */
+}
+
+.teacherDashboard__filter-form {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1rem;
+}
+
+.teacherDashboard__filter-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.teacherDashboard__filter-group label {
+	font-weight: 600;
+	margin-bottom: 0.25rem;
+	font-size: 0.9rem;
+}
+
+.teacherDashboard__filter-group input,
+.teacherDashboard__filter-group select {
+	padding: 0.5rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 1rem;
+}
+
+.teacherDashboard__filter-button {
+	padding: 0.75rem;
+	background-color: #007acc;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: bold;
+	width: 100%;
+	transition: background-color 0.2s ease;
+}
+
+.teacherDashboard__filter-button:hover {
+	background-color: #005fa3;
+}
+
+.teacherDashboard__filter-group--full {
+	grid-column: auto;
+}
+
+@media screen and (min-width: 850px) {
+	.teacherDashboard__bottom {
+		display: flex;
+	}
+	.teacherDashboard__filter {
+		width: 350px;
+		padding: 1rem;
+	}
+	.teacherDashboard__filter-form {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Spreadsheet */
+
+.teacherDashboard__table {
+	padding: 1rem;
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	flex: 1;
+	margin-inline: 1rem;
+}
+
+.teacherDashboard__table-element {
+	width: 100%;
+}
