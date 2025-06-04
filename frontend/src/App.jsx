@@ -8,6 +8,7 @@ import Footer from "./components/common/Footer";
 import SpreadsheetButton from "./components/common/SpreadsheetButton";
 import FilterButton from "./components/common/FilterButton";
 import DownloadButton from "./components/common/DownloadButton";
+import DashboardPage from "./pages/DashboardPage";
 
 import "./App.css";
 
