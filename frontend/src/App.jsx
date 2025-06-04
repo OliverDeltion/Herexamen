@@ -1,9 +1,6 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-// in src/main.jsx of src/App.jsx
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "./styles/global.css";
+//import "./styles/global.css";
 import { route } from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavigationBar from "./components/common/NavigationBar";
