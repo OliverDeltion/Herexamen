@@ -17,9 +17,9 @@ const DashboardPage = () => {
 	};
 
 	return (
-		<div>
-			{<NavigationBar />}
-
+		<>
+			<NavigationBar />
+			
 			<div className="text-center">
 				{selectedRole === "null" && (
 					<div className="accounts">
@@ -52,7 +52,7 @@ const DashboardPage = () => {
 					</div>
 				)}
 			</div>
-		</div>
+		</>
 	);
 };
 
