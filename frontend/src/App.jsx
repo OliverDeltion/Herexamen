@@ -9,6 +9,7 @@ import SpreadsheetButton from "./components/common/SpreadsheetButton";
 import FilterButton from "./components/common/FilterButton";
 import DownloadButton from "./components/common/DownloadButton";
 import DashboardPage from "./pages/DashboardPage";
+import SpreadsheetImport from "./components/dashboard/SpreadsheetImport";
 
 import "./App.css";
 
@@ -19,6 +20,7 @@ function App() {
 		<Router>
 			<Routes>
 				<Route path="/" element={<DashboardPage />} /> {/* Hoofd dashboard route */}
+        		<Route path="/import" element={<SpreadsheetImport />} />
 			</Routes>
 		</Router>
 	);
