@@ -1,3 +1,28 @@
+$color-fail:        #8B0000;
+$color-kritiek:     #C0392B;
+$color-onvoldoende: #E67E22;
+$color-redelijk:    #F1C40F;
+$color-goed:        #27AE60;
+$color-excellent:   #2980B9;
+$color-perfect:     #00C3A5;
+
+.attendance-dot {
+  display: inline-block;
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 2px solid #fff;
+  &.color-fail        { background: $color-fail; }
+  &.color-kritiek     { background: $color-kritiek; }
+  &.color-onvoldoende { background: $color-onvoldoende; }
+  &.color-redelijk    { background: $color-redelijk; }
+  &.color-goed        { background: $color-goed; }
+  &.color-excellent   { background: $color-excellent; }
+  &.color-perfect     { background: $color-perfect; }
+}
+
 .student-dashboard-container {
   display: flex;
   justify-content: center;
@@ -25,3 +50,4 @@
     border: 3px solid #eee;
   }
 }
+
