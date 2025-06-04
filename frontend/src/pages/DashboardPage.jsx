@@ -5,9 +5,6 @@ import StudentDashboard from "../components/dashboard/StudentDashboard";
 import TeacherDashboard from "../components/dashboard/TeacherDashboard";
 import Modal from "../components/common/Modal";
 
-//Styles
-import "../styles/global.css";
-
 import "../App.css";
 
 const DashboardPage = () => {
@@ -23,55 +20,50 @@ const DashboardPage = () => {
 	};
 
 	return (
-		<div>
+		<>
 			<NavigationBar />
-			<div className="text-center">
+			
+			<div className="dashboard-container">
 				{selectedRole === null && (
-					<div className="accounts">
-						<h1 className="text-h1">Selecteer account</h1>
-						<button onClick={() => handleSelectedRole("student")}className="student-button">
+					<>
+						<h1 className="dashboard-heading">Selecteer account</h1>
+						<div className="dashboard-buttons">
+						<button onClick={() => handleSelectedRole("student")} className="btn-student">
 							Student
 						</button>
-						<br />
-						<button onClick={() => handleSelectedRole("docent")}className="docent-button">
+						<button onClick={() => handleSelectedRole("docent")} className="btn-docent">
 							Docent
 						</button>
-					</div>
+						</div>
+					</>
 				)}
-				<Modal isOpen={!!selectedRole} onClose={() => setSelectedRole(null)}>
-					<div 
-						style={{
-							padding: "2rem",
-							backgroundColor: "#ffffff",
-							border: "2px solid #3366cc",
-							borderRadius: "8px",
-							color: "#000",
-						}}
-					>
-						{selectedRole === "student" && (
+				<Modal isOpen={!!selectedRole} onClose={handleBack}>
+					<div className="dashboard-modal-content">
+				{selectedRole === "student" && (
 							<>
-							<p>Modal is open voor: {selectedRole}</p>
+							<p>Student dashboard</p>
 						<button onClick={handleBack} className="student-terug">
 							Terug
 						</button>
-								<StudentDashboard />
+						<StudentDashboard />
 							</>
-						)}
-						
+				)}
+
 				{selectedRole === "docent" && (
 							<>
-						<p>Modal is open voor: {selectedRole}</p>
+						<p>Docenten dashboard</p>
 						<button onClick={handleBack} className="docent-terug">
 							Terug
 						</button>
-								<TeacherDashboard />
+						<TeacherDashboard />
 							</>
 						)}
 					</div>
 				</Modal>
 			</div>
 			<Footer />
-		</div>
+		
+		</>
 		
 	);
 };
