@@ -35,10 +35,7 @@ const StudentDashboard = () => {
                         className={`profile-border-${colorClass}`}
                     />
                 </div>
-                <h2>Student Dashboard</h2>
-                <p>
-                    <strong>Naam:</strong> {student.naam}
-                </p>
+                <h2>{student.naam}</h2>
                 <p>
                     <strong>Studentnummer:</strong> {student.studentNumber}
                 </p>
@@ -59,6 +56,9 @@ const StudentDashboard = () => {
                 <p>
                     <strong>Jaar:</strong> {student.year}
                 </p>
+                <span className="status" style={{ textTransform: "capitalize" }}>
+                    Aanwezigheid: <span className={`status-color-${colorClass}`}>{colorClass}</span>
+                </span>
             </div>
         </div>
     );

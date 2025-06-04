@@ -12,6 +12,7 @@
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   min-width: 320px;
   text-align: center;
+  position: relative; 
 }
 
 .student-profile-photo {
@@ -59,5 +60,21 @@ $color-perfect:     #00C3A5;
 .profile-border-goed        { border-color: $color-goed !important; }
 .profile-border-excellent   { border-color: $color-excellent !important; }
 .profile-border-perfect     { border-color: $color-perfect !important; }
+
+.status {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 12px;
+  font-size: 1rem;
+}
+
+.status-color-fail        { color: $color-fail !important; }
+.status-color-kritiek     { color: $color-kritiek !important; }
+.status-color-onvoldoende { color: $color-onvoldoende !important; }
+.status-color-redelijk    { color: $color-redelijk !important; }
+.status-color-goed        { color: $color-goed !important; }
+.status-color-excellent   { color: $color-excellent !important; }
+.status-color-perfect     { color: $color-perfect !important; }
 
 
