@@ -13,6 +13,10 @@
   min-width: 320px;
   text-align: center;
   position: relative; 
+
+  p {
+    margin-bottom: 0.7rem;
+  }
 }
 
 .student-profile-photo {
@@ -76,5 +80,22 @@ $color-perfect:     #00C3A5;
 .status-color-goed        { color: $color-goed !important; }
 .status-color-excellent   { color: $color-excellent !important; }
 .status-color-perfect     { color: $color-perfect !important; }
+
+.student-dashboard-flex {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: center; // Voeg toe voor horizontale centrering
+  min-height: 70vh;        // Optioneel: voor verticale centrering
+}
+
+.student-dashboard-average {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 2rem 1.5rem;
+  min-width: 200px;
+  text-align: center;
+}
 
 
