@@ -8,7 +8,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 // categorie bepaling op basis van percentage
 const getCategorie = (percentage) => {
-	if (percentage === 0) return "Geen aanwezigheid";
+	if (percentage === 0) return "Fail";
 	if (percentage >= 100) return "Perfect";
 	if (percentage >= 95) return "Excellent";
 	if (percentage >= 80) return "Goed";
@@ -102,21 +102,38 @@ const TeacherDashboard = () => {
 						<div class="teacherDashboard__top">
 							<div class="teacherDashboard__start">
 								<div class="teacherDashboard__start-header">
-									<h3>Programmeerschool Docent Dashboard</h3>
-									{/* <button>test</button> */}
+									<h3>Docent Dashboard</h3>
+									<div className="navbar__end">
+										<a className="navbar__button" href="#">
+											Importeer Spreadsheet
+										</a>
+									</div>
 								</div>
-								<div className="teacherDashboard__groups">
-									{/* voorbeeld van groepen, deze zou normaal uit de database komen
-									{[1, 2, 3, 4].map((group) => (
-										<div className="teacherDashboard__group" key={group}>
-											<div className="teacherDashboard__group-name">Groep {group}</div>
-											<div className="teacherDashboard__group-students">Aantal studenten: 5</div>
-											<a className="teacherDashboard__group-edit">Bekijk Groep</a>
-											<a className="teacherDashboard__group-delete">Verwijder Groep</a>
-										</div>
-									))} */}
+								<div className="teacherDashboard__kpi">
+									<h4>
+										<i className="fas fa-chart-bar"></i> Overzicht
+									</h4>
+									<ul>
+										<li>
+											<i className="fas fa-user-graduate"></i> Unieke studenten:{" "}
+											<strong>{new Set(filteredData.map((s) => s.studentnummer)).size}</strong>
+										</li>
+										<li>
+											<i className="fas fa-calendar-week"></i> Aantal weken:{" "}
+											<strong>{new Set(filteredData.map((s) => s.week)).size}</strong>
+										</li>
+										<li>
+											<i className="fas fa-percent"></i> Gem. aanwezigheid: <strong>{filteredAveragePercentage}%</strong>
+										</li>
+										<li>
+											<i className="fas fa-exclamation-triangle"></i> Fails:{" "}
+											<strong>{filteredData.filter((s) => getCategorie(s.percentage ?? 0) === "Fail").length}</strong>
+										</li>
+										<li>
+											<i className="fas fa-percentage"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
+										</li>
+									</ul>
 								</div>
-								{/* <button class="teacherDashboard__button">Maak nieuwe groep aan</button> */}
 							</div>
 							<div class="teacherDashboard__end">
 								<div class="teacherDashboard__diagram">
