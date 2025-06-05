@@ -1,0 +1,193 @@
+.student-dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.student-dashboard-content {
+  background: #fff;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  min-width: 320px;
+  text-align: center;
+  position: relative; 
+
+  p {
+    margin-bottom: 0.7rem;
+  }
+}
+
+.student-profile-photo {
+  margin-bottom: 1.5rem;
+
+  img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3.5px solid;
+  }
+}
+
+$color-fail:        #8B0000;
+$color-kritiek:     #C0392B;
+$color-onvoldoende: #E67E22;
+$color-redelijk:    #F1C40F;
+$color-goed:        #27AE60;
+$color-excellent:   #2980B9;
+$color-perfect:     #00C3A5;
+
+.attendance-dot {
+  display: inline-block;
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 2px solid #fff;
+}
+
+.attendance-color-fail        { background: $color-fail !important; }
+.attendance-color-kritiek     { background: $color-kritiek !important; }
+.attendance-color-onvoldoende { background: $color-onvoldoende !important; }
+.attendance-color-redelijk    { background: $color-redelijk !important; }
+.attendance-color-goed        { background: $color-goed !important; }
+.attendance-color-excellent   { background: $color-excellent !important; }
+.attendance-color-perfect     { background: $color-perfect !important; }
+
+.profile-border-fail        { border-color: $color-fail !important; }
+.profile-border-kritiek     { border-color: $color-kritiek !important; }
+.profile-border-onvoldoende { border-color: $color-onvoldoende !important; }
+.profile-border-redelijk    { border-color: $color-redelijk !important; }
+.profile-border-goed        { border-color: $color-goed !important; }
+.profile-border-excellent   { border-color: $color-excellent !important; }
+.profile-border-perfect     { border-color: $color-perfect !important; }
+
+.status {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 12px;
+  font-size: 1rem;
+}
+
+.status-color-fail        { color: $color-fail !important; }
+.status-color-kritiek     { color: $color-kritiek !important; }
+.status-color-onvoldoende { color: $color-onvoldoende !important; }
+.status-color-redelijk    { color: $color-redelijk !important; }
+.status-color-goed        { color: $color-goed !important; }
+.status-color-excellent   { color: $color-excellent !important; }
+.status-color-perfect     { color: $color-perfect !important; }
+
+.student-dashboard-flex {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: center; 
+  min-height: 70vh;        
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.student-dashboard-average {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 2rem 1.5rem;
+  min-width: 200px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+
+  canvas {
+    height: 175px !important;
+    width: 100% !important;
+    cursor: pointer;
+  }
+}
+
+.dashboard-average-percentage {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.dashboard-circular-progress {
+  width: 120px;
+  margin: 2rem auto 0 auto;
+}
+
+.dashboard-circular-legend {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.dashboard-circular-legend .present {
+  color: #27ae60;
+}
+
+.dashboard-circular-legend .absent {
+  color: #e74c3c;
+}
+
+.dashboard-circular-progress > div {
+  width: 120px;
+  min-width: 120px;
+}
+
+.student-dashboard-weekbuttons {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.week-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  border: 1px solid #27ae60;
+  background: #fff;
+  font-weight: normal;
+  color: #222;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.week-btn.selected {
+  border: 2px solid #27ae60;
+  background: #eafaf1;
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.dashboard-bar {
+  margin-bottom: 1rem;
+}
+
+.dashboard-circular-progress {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.circular-container {
+  width: 120px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.dashboard-circular-label {
+  font-size: 0.9rem;
+  margin-top: 4px;
+  color: #888;
+}
+
+.student-dashboard-container,
+.student-dashboard-average {
+  width: 400px;
+  min-height: 600px;
+  box-sizing: border-box;
+  /* height: 600px;  // NIET gebruiken, alleen min-height! */
+  overflow: visible; // Zorg dat de inhoud niet wordt afgekapt
+}

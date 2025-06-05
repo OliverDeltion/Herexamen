@@ -7,8 +7,8 @@
 	position: relative;
 	background-color: #f2f2f2;
 	padding: 1rem;
-	margin: 0 auto;
 	border-bottom: 1px solid black;
+	width: 100%;
 }
 .navbar__start {
 	display: flex;
