@@ -101,6 +101,10 @@ const TeacherDashboard = () => {
 							<div class="teacherDashboard__filter">
 								<form class="teacherDashboard__filter-form">
 									<div class="teacherDashboard__filter-group">
+										<label for="periode">Studentnummer</label>
+										<input type="text" id="studentnummer" name="studentnummer" />
+									</div>
+									<div class="teacherDashboard__filter-group">
 										<label for="weekStart">Week van</label>
 										<input type="number" id="weekStart" name="weekStart" min="1" max="52" />
 									</div>
@@ -108,16 +112,6 @@ const TeacherDashboard = () => {
 										<label for="weekEnd">Week tot</label>
 										<input type="number" id="weekEnd" name="weekEnd" min="1" max="52" />
 									</div>
-									{/* <div class="teacherDashboard__filter-group">
-										<label for="periode">Periode</label>
-										<select id="periode" name="periode">
-											<option value="">-- Kies --</option>
-											<option value="1">Periode 1</option>
-											<option value="2">Periode 2</option>
-											<option value="3">Periode 3</option>
-											<option value="4">Periode 4</option>
-										</select>
-									</div> */}
 									<div class="teacherDashboard__filter-group">
 										<label for="datum">Datum</label>
 										<input type="date" id="datum" name="datum" />
