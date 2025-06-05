@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Footer from "../components/common/Footer";
 import StudentDashboard from "../components/dashboard/StudentDashboard";
 import TeacherDashboard from "../components/dashboard/TeacherDashboard";
+import Modal from "../components/common/Modal";
 
 //Styles
 import "../styles/global.css";
@@ -44,7 +45,6 @@ const DashboardPage = () => {
 					<div className="dashboard-modal-content">
 				{selectedRole === "student" && (
 							<>
-							<p>Student dashboard</p>
 						<button onClick={handleBack} className="student-terug">
 							Terug
 						</button>
@@ -54,7 +54,6 @@ const DashboardPage = () => {
 
 				{selectedRole === "docent" && (
 							<>
-						<p>Docenten dashboard</p>
 						<button onClick={handleBack} className="docent-terug">
 							Terug
 						</button>
