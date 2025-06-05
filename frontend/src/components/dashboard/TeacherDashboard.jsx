@@ -1,6 +1,6 @@
-import React, { use } from "react";
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import NavigationBar from "../common/NavigationBar";
 import "./TeacherDashboard.css";
 import "../../Global.css";
@@ -12,8 +12,8 @@ const TeacherDashboard = () => {
 	const [data, setData] = useState([]);
 	useEffect(() => {
 		async function data() {
-			let data = await axios.get('http://localhost:3000/api/get/students')
-			console.log(data.data)
+			let data = await axios.get("http://localhost:3000/api/get/students");
+			console.log(data.data);
 			setData(data.data);
 		}
 		data();
@@ -107,18 +107,16 @@ const TeacherDashboard = () => {
 							</div>
 							<div class="teacherDashboard__table">
 								<table class="teacherDashboard__table-element">
-									{
-										data.map((student,index) => (<div key={index}>
+									{data.map((student, index) => (
+										<div key={index}>
 											<tr>
-                    <td>{student.studentnummer}</td>
-					<td>{student.percentage}</td>
-					<td>{student.aanwezigheid}</td>
-					<td>{student.roosterminuten}</td>
-					</tr>
-                </div>))
-									}
-
-
+												<td>{student.studentnummer}</td>
+												<td>{student.percentage}</td>
+												<td>{student.aanwezigheid}</td>
+												<td>{student.roosterminuten}</td>
+											</tr>
+										</div>
+									))}
 								</table>
 							</div>
 						</div>
