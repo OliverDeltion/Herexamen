@@ -114,6 +114,7 @@ const TeacherDashboard = () => {
 					<td>{student.percentage}</td>
 					<td>{student.aanwezigheid}</td>
 					<td>{student.roosterminuten}</td>
+					<td>{student.week}</td>
 					</tr>
                 </div>))
 									}
