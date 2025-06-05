@@ -1,5 +1,4 @@
 import React from "react";
-import NavigationBar from "../common/NavigationBar";
 
 const StudentDashboard = () => {
 	return <div style={{

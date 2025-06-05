@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import NavigationBar from "../components/common/NavigationBar";
 import Footer from "../components/common/Footer";
 import StudentDashboard from "../components/dashboard/StudentDashboard";
 import TeacherDashboard from "../components/dashboard/TeacherDashboard";
@@ -20,20 +19,23 @@ const DashboardPage = () => {
 	};
 
 	return (
-		<>
-			<NavigationBar />
-			
+		<>	
 			<div className="dashboard-container">
+				<header className="dashboard-header">
+					<h1 className="dashboard-title">Dashboard AARdata</h1>
+					</header>
 				{selectedRole === null && (
 					<>
-						<h1 className="dashboard-heading">Selecteer account</h1>
+						<div className="dashboard-card">
+						<h2 className="dashboard-heading">Selecteer account</h2>
 						<div className="dashboard-buttons">
-						<button onClick={() => handleSelectedRole("student")} className="btn-student">
+						<button onClick={() => handleSelectedRole("student")} className="btn student-btn">
 							Student
 						</button>
-						<button onClick={() => handleSelectedRole("docent")} className="btn-docent">
+						<button onClick={() => handleSelectedRole("docent")} className="btn docent-btn">
 							Docent
-						</button>
+								</button>
+								</div>
 						</div>
 					</>
 				)}
