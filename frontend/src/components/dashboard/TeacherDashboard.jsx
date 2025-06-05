@@ -1,4 +1,6 @@
-import React from "react";
+import React, { use } from "react";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import NavigationBar from "../common/NavigationBar";
 import "./TeacherDashboard.css";
 import "../../Global.css";
@@ -7,6 +9,15 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 const percentage = 75;
 const TeacherDashboard = () => {
+	const [data, setData] = useState([]);
+	useEffect(() => {
+		async function data() {
+			let data = await axios.get('http://localhost:3000/api/get/students')
+			console.log(data.data)
+			setData(data.data);
+		}
+		data();
+	}, []);
 	return (
 		<div>
 			<div class="container">
@@ -96,140 +107,18 @@ const TeacherDashboard = () => {
 							</div>
 							<div class="teacherDashboard__table">
 								<table class="teacherDashboard__table-element">
-									<thead>
-										<tr>
-											<th>Studentnummer</th>
-											<th>Aanwezigheid</th>
-											<th>Rooster</th>
-											<th>Week</th>
-											<th>Jaar</th>
-											<th>Percentage</th>
-											<th>Categorie</th>
-											<th>Gestopt?</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>st001</td>
-											<td>300</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--goed">83%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-										<tr>
-											<td>st002</td>
-											<td>150</td>
-											<td>360</td>
-											<td>25</td>
-											<td>2025</td>
-											<td class="percentage percentage--kritiek">41%</td>
-											<td>Excellent</td>
-											<td>
-												<input type="checkbox" name="gestopt-st002" class="teacherDashboard__checkbox" />
-											</td>
-										</tr>
-									</tbody>
+									{
+										data.map((student,index) => (<div key={index}>
+											<tr>
+                    <td>{student.studentnummer}</td>
+					<td>{student.percentage}</td>
+					<td>{student.aanwezigheid}</td>
+					<td>{student.roosterminuten}</td>
+					</tr>
+                </div>))
+									}
+
+
 								</table>
 							</div>
 						</div>

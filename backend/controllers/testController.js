@@ -130,6 +130,7 @@ GROUP BY
     let data = [];
     console.log("Data: " + data);
     for (let row of resultArray) {
+
       const aanwezig = Number(row.totaal_aanwezigheid);
       const rooster = Number(row.totaal_roosterminuten);
 
@@ -137,6 +138,8 @@ GROUP BY
       data.push({
         percentage,
         studentnummer: row.studentnummer,
+        aanwezigheid: row.totaal_aanwezigheid,
+        roosterminuten: row.totaal_roosterminuten,
       });
     }
     console.log(data);
