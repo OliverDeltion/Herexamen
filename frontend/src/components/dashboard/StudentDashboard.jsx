@@ -9,7 +9,12 @@ import ReactModal from "react-modal";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const weeks = [
-    { attendance: 240, schedule: 500, week: 22, year: 2025 },
+    {
+        week: 22,
+        year: 2025,
+        schedule: 500,
+        attendance: 240
+    },
     { attendance: 300, schedule: 500, week: 23, year: 2025 },
     { attendance: 345, schedule: 500, week: 24, year: 2025 },
 ];
@@ -29,6 +34,9 @@ const StudentDashboard = () => {
     const [weekIndex, setWeekIndex] = useState(0);
     const [randomWeeks, setRandomWeeks] = useState(weeks);
     const [modalOpen, setModalOpen] = useState(false);
+    const [filterStart, setFilterStart] = useState(0);
+    const [filterEnd, setFilterEnd] = useState(weeks.length - 1);
+    const [selectedWeeks, setSelectedWeeks] = useState(randomWeeks.map((_, i) => i));
 
     useEffect(() => {
         fetch("https://randomuser.me/api/")
@@ -55,6 +63,16 @@ const StudentDashboard = () => {
     const percentage = Math.round((currentWeek.attendance / currentWeek.schedule) * 100);
     const colorClass = getAttendanceColor(percentage);
 
+    const toggleWeek = (i) => {
+        setSelectedWeeks((prev) =>
+            prev.includes(i)
+                ? prev.filter(idx => idx !== i)
+                : [...prev, i].sort((a, b) => a - b)
+        );
+    };
+
+    const filteredWeeks = selectedWeeks.map(i => sortedWeeks[i]);
+
     const barData = {
         labels: sortedWeeks.map(w => `Week ${w.week}`),
         datasets: [
@@ -66,6 +84,22 @@ const StudentDashboard = () => {
             {
                 label: "Rooster (min)",
                 data: sortedWeeks.map(w => w.schedule),
+                backgroundColor: "#bdbdbd",
+            },
+        ],
+    };
+
+    const filteredBarData = {
+        labels: filteredWeeks.map(w => `Week ${w.week}`),
+        datasets: [
+            {
+                label: "Aanwezigheid (min)",
+                data: filteredWeeks.map(w => w.attendance),
+                backgroundColor: "#27ae60",
+            },
+            {
+                label: "Rooster (min)",
+                data: filteredWeeks.map(w => w.schedule),
                 backgroundColor: "#bdbdbd",
             },
         ],
@@ -101,6 +135,14 @@ const StudentDashboard = () => {
     const totalSchedule = sortedWeeks.reduce((sum, w) => sum + w.schedule, 0);
     const presentPercentage = Math.round((totalAttendance / totalSchedule) * 100);
     const absent = totalSchedule - totalAttendance;
+
+    // Bereken aanwezigheid/afwezigheid voor geselecteerde weken
+    const filteredAttendance = filteredWeeks.reduce((sum, w) => sum + w.attendance, 0);
+    const filteredSchedule = filteredWeeks.reduce((sum, w) => sum + w.schedule, 0);
+    const filteredPresentPercentage = filteredSchedule > 0
+        ? Math.round((filteredAttendance / filteredSchedule) * 100)
+        : 0;
+    const filteredAbsent = filteredSchedule - filteredAttendance;
 
     if (!student) return <div>Loading...</div>;
 
@@ -166,28 +208,61 @@ const StudentDashboard = () => {
             </div>
             <div className="student-dashboard-average">
                 <h3>Gemiddelde aanwezigheid</h3>
+                <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem", justifyContent: "center" }}>
+                </div>
+                <div className="student-dashboard-weekbuttons">
+                    {sortedWeeks.map((w, i) => (
+                        <button
+                            key={w.week}
+                            className={`week-btn${selectedWeeks.includes(i) ? " selected" : ""}`}
+                            onClick={() => toggleWeek(i)}
+                        >
+                            {w.week}
+                        </button>
+                    ))}
+                </div>
                 <Bar
-                    data={barData}
+                    data={filteredBarData}
                     options={barOptions}
                     height={200}
                     width={400}
+                    className="dashboard-bar"
                     onClick={() => setModalOpen(true)}
                 />
-                <div className="dashboard-average-percentage">
-                </div>
                 <div className="dashboard-circular-progress">
-                    <CircularProgressbar
-                        value={presentPercentage}
-                        text={`${presentPercentage}%`}
-                        styles={buildStyles({
-                            pathColor: "#27ae60",
-                            trailColor: "#e74c3c",
-                            textColor: "#222",
-                        })}
-                    />
-                    <div className="dashboard-circular-legend">
-                        <span className="present">Aanwezig: {totalAttendance} min</span><br />
-                        <span className="absent">Afwezig: {absent} min</span>
+                    {/* Algemeen */}
+                    <div className="circular-container">
+                        <CircularProgressbar
+                            value={presentPercentage}
+                            text={`${presentPercentage}%`}
+                            styles={buildStyles({
+                                pathColor: "#27ae60",
+                                trailColor: "#e74c3c",
+                                textColor: "#222",
+                            })}
+                        />
+                        <div className="dashboard-circular-legend">
+                            <span className="present">Aanwezig: {totalAttendance} min</span><br />
+                            <span className="absent">Afwezig: {absent} min</span>
+                        </div>
+                        <div className="dashboard-circular-label">Totaal</div>
+                    </div>
+                    {/* Gefilterd */}
+                    <div className="circular-container">
+                        <CircularProgressbar
+                            value={filteredPresentPercentage}
+                            text={`${filteredPresentPercentage}%`}
+                            styles={buildStyles({
+                                pathColor: "#27ae60",
+                                trailColor: "#e74c3c",
+                                textColor: "#222",
+                            })}
+                        />
+                        <div className="dashboard-circular-legend">
+                            <span className="present">Aanwezig: {filteredAttendance} min</span><br />
+                            <span className="absent">Afwezig: {filteredAbsent} min</span>
+                        </div>
+                        <div className="dashboard-circular-label">Gefilterd</div>
                     </div>
                 </div>
                 <ReactModal
@@ -208,6 +283,47 @@ const StudentDashboard = () => {
                     <button onClick={() => setModalOpen(false)}>Sluiten</button>
                 </ReactModal>
             </div>
+            {currentWeek.days && (
+                <div style={{ marginTop: "2rem" }}>
+                    <h4>Aanwezigheid per dag (week {currentWeek.week})</h4>
+                    <Bar
+                        data={{
+                            labels: currentWeek.days.map(d => d.day),
+                            datasets: [
+                                {
+                                    label: "Aanwezigheid (min)",
+                                    data: currentWeek.days.map(d => d.attendance),
+                                    backgroundColor: "#27ae60",
+                                },
+                                {
+                                    label: "Rooster (min)",
+                                    data: currentWeek.days.map(d => d.schedule),
+                                    backgroundColor: "#bdbdbd",
+                                },
+                            ],
+                        }}
+                        options={{
+                            responsive: true,
+                            plugins: {
+                                legend: { display: true },
+                                title: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (context) => `${context.parsed.y} min`
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: { display: true, text: "Aantal minuten" }
+                                }
+                            }
+                        }}
+                        height={120}
+                    />
+                </div>
+            )}
         </div>
     );
 };

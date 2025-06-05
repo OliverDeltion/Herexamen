@@ -83,10 +83,12 @@ $color-perfect:     #00C3A5;
 
 .student-dashboard-flex {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   align-items: flex-start;
   justify-content: center; // Voeg toe voor horizontale centrering
   min-height: 70vh;        // Optioneel: voor verticale centrering
+  overflow-x: auto; // Sta horizontaal scrollen toe als nodig
+  overflow-y: visible;
 }
 
 .student-dashboard-average {
@@ -100,7 +102,7 @@ $color-perfect:     #00C3A5;
   max-width: 400px;
 
   canvas {
-    height: 200px !important;
+    height: 175px !important;
     width: 100% !important;
     cursor: pointer;
   }
@@ -130,4 +132,62 @@ $color-perfect:     #00C3A5;
   color: #e74c3c;
 }
 
+.dashboard-circular-progress > div {
+  width: 120px;
+  min-width: 120px;
+}
 
+.student-dashboard-weekbuttons {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.week-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  border: 1px solid #27ae60;
+  background: #fff;
+  font-weight: normal;
+  color: #222;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.week-btn.selected {
+  border: 2px solid #27ae60;
+  background: #eafaf1;
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.dashboard-bar {
+  margin-bottom: 1rem;
+}
+
+.dashboard-circular-progress {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.circular-container {
+  width: 120px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.dashboard-circular-label {
+  font-size: 0.9rem;
+  margin-top: 4px;
+  color: #888;
+}
+
+.student-dashboard-container,
+.student-dashboard-average {
+  width: 400px;
+  min-height: 600px;
+  box-sizing: border-box;
+  /* height: 600px;  // NIET gebruiken, alleen min-height! */
+  overflow: visible; // Zorg dat de inhoud niet wordt afgekapt
+}
