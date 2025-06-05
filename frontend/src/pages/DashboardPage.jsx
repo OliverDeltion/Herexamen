@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import Footer from "../components/common/Footer";
 import StudentDashboard from "../components/dashboard/StudentDashboard";
 import TeacherDashboard from "../components/dashboard/TeacherDashboard";
-import Modal from "../components/common/Modal";
 
+//Styles
+import "../styles/global.css";
 import "../App.css";
 
 const DashboardPage = () => {
-	const [selectedRole, setSelectedRole] = useState(null);
-	console.log("Selected Role:", selectedRole);
+    const [selectedRole, setSelectedRole] = useState(null);
+    console.log("Selected Role:", selectedRole);
 
-	const handleSelectedRole = (role) => {
-		setSelectedRole(role);
-	};
+    const handleSelectedRole = (role) => {
+        setSelectedRole(role);
+    };
 
-	const handleBack = () => {
-		setSelectedRole(null);
-	};
+    const handleBack = () => {
+        setSelectedRole(null);
+    };
 
 	return (
 		<>	

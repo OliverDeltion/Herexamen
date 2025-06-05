@@ -122,3 +122,6 @@ html, body {
   border-radius: 8px;
   color: var(--black);
 }
+#root {
+  width: 95%;
+}
