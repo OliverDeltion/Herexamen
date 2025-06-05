@@ -45,3 +45,6 @@ h1 {
 	padding: 2rem;
 	text-align: center;
 }
+#root {
+  width: 95%;
+}
