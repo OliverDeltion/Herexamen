@@ -209,29 +209,37 @@ const StudentDashboard = () => {
             <div className="student-dashboard-average">
                 <h3>Gemiddelde aanwezigheid</h3>
                 <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem", justifyContent: "center" }}>
-                </div>
-                <div className="student-dashboard-weekbuttons">
                     {sortedWeeks.map((w, i) => (
                         <button
                             key={w.week}
-                            className={`week-btn${selectedWeeks.includes(i) ? " selected" : ""}`}
+                            style={{
+                                padding: "0.5rem 1.2rem",
+                                borderRadius: "6px",
+                                border: selectedWeeks.includes(i) ? "2px solid #27ae60" : "1px solid #ccc",
+                                background: selectedWeeks.includes(i) ? "#eafaf1" : "#fff",
+                                fontWeight: selectedWeeks.includes(i) ? "bold" : "normal",
+                                cursor: "pointer"
+                            }}
                             onClick={() => toggleWeek(i)}
                         >
                             {w.week}
                         </button>
-                    ))}
+                    ))} 
+                </div>
+                <div style={{ marginBottom: "1rem" }}>
                 </div>
                 <Bar
                     data={filteredBarData}
                     options={barOptions}
                     height={200}
                     width={400}
-                    className="dashboard-bar"
                     onClick={() => setModalOpen(true)}
                 />
-                <div className="dashboard-circular-progress">
+                <div className="dashboard-average-percentage">
+                </div>
+                <div className="dashboard-circular-progress" style={{ display: "flex", gap: "2rem", justifyContent: "center" }}>
                     {/* Algemeen */}
-                    <div className="circular-container">
+                    <div>
                         <CircularProgressbar
                             value={presentPercentage}
                             text={`${presentPercentage}%`}
@@ -245,10 +253,10 @@ const StudentDashboard = () => {
                             <span className="present">Aanwezig: {totalAttendance} min</span><br />
                             <span className="absent">Afwezig: {absent} min</span>
                         </div>
-                        <div className="dashboard-circular-label">Totaal</div>
+                        <div style={{ fontSize: "0.9rem", marginTop: 4, color: "#888" }}>Totaal</div>
                     </div>
                     {/* Gefilterd */}
-                    <div className="circular-container">
+                    <div>
                         <CircularProgressbar
                             value={filteredPresentPercentage}
                             text={`${filteredPresentPercentage}%`}
@@ -262,7 +270,7 @@ const StudentDashboard = () => {
                             <span className="present">Aanwezig: {filteredAttendance} min</span><br />
                             <span className="absent">Afwezig: {filteredAbsent} min</span>
                         </div>
-                        <div className="dashboard-circular-label">Gefilterd</div>
+                        <div style={{ fontSize: "0.9rem", marginTop: 4, color: "#888" }}>Gefilterd</div>
                     </div>
                 </div>
                 <ReactModal

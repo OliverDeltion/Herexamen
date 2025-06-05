@@ -85,9 +85,9 @@ $color-perfect:     #00C3A5;
   display: flex;
   gap: 1rem;
   align-items: flex-start;
-  justify-content: center; // Voeg toe voor horizontale centrering
-  min-height: 70vh;        // Optioneel: voor verticale centrering
-  overflow-x: auto; // Sta horizontaal scrollen toe als nodig
+  justify-content: center; 
+  min-height: 70vh;        
+  overflow-x: auto;
   overflow-y: visible;
 }
 
