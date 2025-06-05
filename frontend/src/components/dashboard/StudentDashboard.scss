@@ -96,6 +96,14 @@ $color-perfect:     #00C3A5;
   padding: 2rem 1.5rem;
   min-width: 200px;
   text-align: center;
+  width: 100%;
+  max-width: 400px;
+
+  canvas {
+    height: 200px !important;
+    width: 100% !important;
+    cursor: pointer;
+  }
 }
 
 .dashboard-average-percentage {

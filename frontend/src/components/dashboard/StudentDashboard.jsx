@@ -4,6 +4,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import ReactModal from "react-modal";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -27,6 +28,7 @@ const StudentDashboard = () => {
     const [student, setStudent] = useState(null);
     const [weekIndex, setWeekIndex] = useState(0);
     const [randomWeeks, setRandomWeeks] = useState(weeks);
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         fetch("https://randomuser.me/api/")
@@ -57,10 +59,13 @@ const StudentDashboard = () => {
         labels: sortedWeeks.map(w => `Week ${w.week}`),
         datasets: [
             {
-                label: "Aanwezigheid (%)",
-                data: sortedWeeks.map(w =>
-                    w.schedule > 0 ? Math.round((w.attendance / w.schedule) * 100) : 0
-                ),
+                label: "Aanwezigheid (min)",
+                data: sortedWeeks.map(w => w.attendance),
+                backgroundColor: "#27ae60",
+            },
+            {
+                label: "Rooster (min)",
+                data: sortedWeeks.map(w => w.schedule),
                 backgroundColor: "#bdbdbd",
             },
         ],
@@ -69,19 +74,19 @@ const StudentDashboard = () => {
     const barOptions = {
         responsive: true,
         plugins: {
-            legend: { display: false },
+            legend: { display: true },
             title: { display: false },
             tooltip: {
                 callbacks: {
-                    label: (context) => `${context.parsed.y}%`
+                    label: (context) => `${context.parsed.y} min`
                 }
             }
         },
         scales: {
             y: {
                 beginAtZero: true,
-                max: 100,
-                title: { display: true, text: "Aanwezigheid (%)" }
+                // max: 100,  // Verwijder of comment deze regel uit!
+                title: { display: true, text: "Aantal minuten" }
             }
         }
     };
@@ -161,7 +166,13 @@ const StudentDashboard = () => {
             </div>
             <div className="student-dashboard-average">
                 <h3>Gemiddelde aanwezigheid</h3>
-                <Bar data={barData} options={barOptions} />
+                <Bar
+                    data={barData}
+                    options={barOptions}
+                    height={200}
+                    width={400}
+                    onClick={() => setModalOpen(true)}
+                />
                 <div className="dashboard-average-percentage">
                 </div>
                 <div className="dashboard-circular-progress">
@@ -179,6 +190,23 @@ const StudentDashboard = () => {
                         <span className="absent">Afwezig: {absent} min</span>
                     </div>
                 </div>
+                <ReactModal
+                    isOpen={modalOpen}
+                    onRequestClose={() => setModalOpen(false)}
+                    style={{
+                        content: {
+                            maxWidth: "800px",
+                            margin: "auto",
+                            height: "550px",
+                            overflow: "hidden"
+                        }
+                    }}
+                    ariaHideApp={false}
+                >
+                    <h3>Uitvergrote grafiek</h3>
+                    <Bar data={barData} options={barOptions} height={400} width={700} />
+                    <button onClick={() => setModalOpen(false)}>Sluiten</button>
+                </ReactModal>
             </div>
         </div>
     );
