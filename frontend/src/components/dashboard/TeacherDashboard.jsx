@@ -129,9 +129,11 @@ const TeacherDashboard = () => {
 											<i className="fas fa-exclamation-triangle"></i> Fails:{" "}
 											<strong>{filteredData.filter((s) => getCategorie(s.percentage ?? 0) === "Fail").length}</strong>
 										</li>
+										<li>
+											<i className="fas fa-percentage"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
+										</li>
 									</ul>
 								</div>
-								{/* <button class="teacherDashboard__button">Maak nieuwe groep aan</button> */}
 							</div>
 							<div class="teacherDashboard__end">
 								<div class="teacherDashboard__diagram">
