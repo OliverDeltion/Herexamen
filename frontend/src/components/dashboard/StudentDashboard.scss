@@ -98,4 +98,28 @@ $color-perfect:     #00C3A5;
   text-align: center;
 }
 
+.dashboard-average-percentage {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.dashboard-circular-progress {
+  width: 120px;
+  margin: 2rem auto 0 auto;
+}
+
+.dashboard-circular-legend {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.dashboard-circular-legend .present {
+  color: #27ae60;
+}
+
+.dashboard-circular-legend .absent {
+  color: #e74c3c;
+}
+
 

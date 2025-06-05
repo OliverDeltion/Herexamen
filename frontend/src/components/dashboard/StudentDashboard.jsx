@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./StudentDashboard.scss";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -89,6 +91,12 @@ const StudentDashboard = () => {
         sortedWeeks.reduce((sum, w) => sum + w.schedule, 0) * 100
     );
 
+    // Calculate present and absent time for circular progress
+    const totalAttendance = sortedWeeks.reduce((sum, w) => sum + w.attendance, 0);
+    const totalSchedule = sortedWeeks.reduce((sum, w) => sum + w.schedule, 0);
+    const presentPercentage = Math.round((totalAttendance / totalSchedule) * 100);
+    const absent = totalSchedule - totalAttendance;
+
     if (!student) return <div>Loading...</div>;
 
     return (
@@ -154,8 +162,22 @@ const StudentDashboard = () => {
             <div className="student-dashboard-average">
                 <h3>Gemiddelde aanwezigheid</h3>
                 <Bar data={barData} options={barOptions} />
-                <div style={{ marginTop: "1rem", fontWeight: "bold" }}>
-                    Gemiddelde: {avgPercentage}%
+                <div className="dashboard-average-percentage">
+                </div>
+                <div className="dashboard-circular-progress">
+                    <CircularProgressbar
+                        value={presentPercentage}
+                        text={`${presentPercentage}%`}
+                        styles={buildStyles({
+                            pathColor: "#27ae60",
+                            trailColor: "#e74c3c",
+                            textColor: "#222",
+                        })}
+                    />
+                    <div className="dashboard-circular-legend">
+                        <span className="present">Aanwezig: {totalAttendance} min</span><br />
+                        <span className="absent">Afwezig: {absent} min</span>
+                    </div>
                 </div>
             </div>
         </div>
