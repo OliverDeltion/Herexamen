@@ -34,28 +34,23 @@ const StudentDashboard = () => {
     const [weekIndex, setWeekIndex] = useState(0);
     const [randomWeeks, setRandomWeeks] = useState(weeks);
     const [modalOpen, setModalOpen] = useState(false);
-    const [filterStart, setFilterStart] = useState(0);
-    const [filterEnd, setFilterEnd] = useState(weeks.length - 1);
+    // const [filterStart, setFilterStart] = useState(0);
+    // const [filterEnd, setFilterEnd] = useState(weeks.length - 1);
     const [selectedWeeks, setSelectedWeeks] = useState(randomWeeks.map((_, i) => i));
 
     useEffect(() => {
-        fetch("https://randomuser.me/api/")
+        fetch("http://localhost:3000/api/students/st5172541747/stats")
             .then(res => res.json())
             .then(data => {
-                const user = data.results[0];
                 setStudent({
-                    naam: `${user.name.first} ${user.name.last}`,
-                    studentNumber: user.login.username.toUpperCase(),
-                    profilePhoto: user.picture.large,
+                    naam: data.name || data.naam || "Onbekend",
+                    studentNumber: data.studentNumber || data.studentnummer || "Onbekend",
+                    profilePhoto: data.profilePhoto || data.profile_photo || "https://ui-avatars.com/api/?name=Student",
                 });
+                if (data.weeks) {
+                    setRandomWeeks(data.weeks);
+                }
             });
-
-        // Randomize attendance for each week
-        const randomized = weeks.map(w => ({
-            ...w,
-            attendance: Math.floor(Math.random() * (w.schedule + 1)), // 0 t/m schedule
-        }));
-        setRandomWeeks(randomized);
     }, []);
 
     const sortedWeeks = [...randomWeeks].sort((a, b) => a.week - b.week);
