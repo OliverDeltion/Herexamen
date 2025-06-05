@@ -4,7 +4,7 @@
 } */
 
 .footer {
-	background-color: var(--accent-orange);
+	background-color: var(--color-primary);
 	padding: 2rem 1rem;
 	display: flex;
 	flex-direction: column;
