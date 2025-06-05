@@ -1,19 +1,31 @@
 /* Dashboard layout */
 
 :root {
-	--accent-orange: rgb(245, 130, 32);
-	--primary-blue: #3366cc;
-	--secondary-blue: #e6f0ff;
-	--light-gray: #f5f5f5;
-	--medium-gray: #cccccc;
-	--dark-gray: #333333;
+	/* Kleurenpalet - blauw thema gebaseerd op #3e98c7 */
+	--color-primary: #3e98c7;
+	--color-primary-hover: #357ead;
+	--color-accent: #2d7dad;
+	--color-secondary: #e3f2fb;
+	--color-secondary-hover: #cce5f5;
+	--color-surface: #b3dcf2;
+	--color-primary-dark: #2a6489;
+
+	--color-background: #f5f5f5;
+	--color-border: #cccccc;
+	--color-text: #333333;
 	--white: #ffffff;
-	--black: #000000;
+	--color-black: #000000;
+
+	/* Layout */
+	--max-width: 1620px;
+
+	/* Typography */
+	--font-family: "Segoe UI", sans-serif;
 }
 
 body {
 	margin: 0;
-	font-family: "Segoe UI, sans-serif";
+	font-family: var(--font-family);
 	background-color: var(--light-gray);
 	color: var(--dark-gray);
 }

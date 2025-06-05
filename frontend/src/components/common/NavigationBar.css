@@ -17,7 +17,7 @@
 	font-size: 27px;
 	font-weight: bold;
 	text-align: start;
-	color: var(--accent-orange);
+	color: var(--color-primary);
 }
 .navbar__container {
 	/* position: relative; */
@@ -34,14 +34,14 @@
 	}
 }
 .navbar__button:hover {
-	background-color: var(--accent-orange-light);
+	background-color: var(--color-secondary);
 	transition: 0.2s;
 }
 
 .navbar__dropdown {
 	position: absolute;
 	display: none;
-	background-color: var(--accent-orange);
+	background-color: var(--color-primary);
 	color: white;
 	border: none;
 	padding: 0.5rem;
@@ -74,7 +74,7 @@
 	right: -500px;
 	width: 11rem;
 	height: 100vh;
-	background-color: var(--accent-orange);
+	background-color: var(--color-primary);
 	display: flex;
 	flex-direction: column;
 	padding: 2rem 1rem;
