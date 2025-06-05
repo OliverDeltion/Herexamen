@@ -20,8 +20,11 @@
 	display: flex;
 	gap: 1rem;
 	padding: 0.5rem;
-	border-bottom: 1px solid black;
 	justify-content: space-around;
+}
+
+.teacherDashboard__groups > .teacherDashboard__group:not(:last-child) {
+	border-bottom: 1px solid black;
 }
 
 .teacherDashboard__group-edit,
@@ -85,6 +88,7 @@
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 1rem;
+	height: 100%;
 }
 
 .teacherDashboard__filter-group {
@@ -144,7 +148,7 @@
 .teacherDashboard__table {
 	overflow-x: scroll;
 	overflow-y: scroll;
-	max-height: 30rem;
+	max-height: 25rem;
 	padding: 1rem;
 	background-color: var(--color-background);
 	border: 1px solid #ddd;
@@ -158,6 +162,7 @@
 	width: 100%;
 }
 
+/* alle modifier kleuren voor de tabel */
 .percentage {
 	text-align: center;
 	font-weight: bold;

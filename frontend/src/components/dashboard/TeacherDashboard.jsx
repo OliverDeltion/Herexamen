@@ -7,7 +7,6 @@ import "../../Global.css";
 import "../common/Buttons.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-const percentage = 75;
 // categorie bepaling op basis van percentage
 const getCategorie = (percentage) => {
 	if (percentage === 0) return "Geen aanwezigheid";
@@ -30,14 +29,33 @@ const getPercentageClass = (percentage) => {
 	return "percentage--fail";
 };
 const TeacherDashboard = () => {
+	// hier komt de studentenlijst in
 	const [data, setData] = useState([]);
+
+	// dit houdt gemiddelde percentage bij van alle studenten
+	const [averagePercentage, setAveragePercentage] = useState(0);
+
 	useEffect(() => {
-		async function data() {
-			let data = await axios.get("http://localhost:3000/api/get/students");
-			console.log(data.data);
-			setData(data.data);
+		async function fetchData() {
+			try {
+				const response = await axios.get("http://localhost:3000/api/get/students");
+				// hier zetten we ze in de state
+				const students = response.data;
+				setData(students);
+				if (students.length > 0) {
+					// telt alle percentages op, als het niet bestaat dan pak je 0
+					const total = students.reduce((acc, student) => acc + (student.percentage || 0), 0);
+					// deelt totaal door aantal studenten => dus gemiddeld percentage
+					const avg = total / students.length;
+					// rond het af naar hele getallen en zet in state
+					setAveragePercentage(Math.round(avg));
+				}
+			} catch (error) {
+				// als het fout gaat, gewoon loggen in console
+				console.error("Fout bij het ophalen van studenten:", error);
+			}
 		}
-		data();
+		fetchData();
 	}, []);
 	return (
 		<div class="bg-color">
@@ -47,41 +65,26 @@ const TeacherDashboard = () => {
 						<div class="teacherDashboard__top">
 							<div class="teacherDashboard__start">
 								<h3>Gemaakte groepen</h3>
-								<div class="teacherDashboard__groups">
-									<div class="teacherDashboard__group">
-										<div class="teacherDashboard__group-name">Groep 1</div>
-										<div class="teacherDashboard__group-students">Aantal studenten: 5</div>
-										<a class="teacherDashboard__group-edit">Bekijk Groep</a>
-										<a class="teacherDashboard__group-delete">Verwijder Groep</a>
-									</div>
-									<div class="teacherDashboard__group">
-										<div class="teacherDashboard__group-name">Group 1</div>
-										<div class="teacherDashboard__group-students">Aantal studenten: 5</div>
-										<a class="teacherDashboard__group-edit">Bekijk Groep</a>
-										<a class="teacherDashboard__group-delete">Verwijder Groep</a>
-									</div>
-									<div class="teacherDashboard__group">
-										<div class="teacherDashboard__group-name">Group 1</div>
-										<div class="teacherDashboard__group-students">Aantal studenten: 5</div>
-										<a class="teacherDashboard__group-edit">Bekijk Groep</a>
-										<a class="teacherDashboard__group-delete">Verwijder Groep</a>
-									</div>
-									<div class="teacherDashboard__group">
-										<div class="teacherDashboard__group-name">Groep 1</div>
-										<div class="teacherDashboard__group-students">Aantal studenten: 5</div>
-										<a class="teacherDashboard__group-edit">Bekijk Groep</a>
-										<a class="teacherDashboard__group-delete">Verwijder Groep</a>
-									</div>
+								<div className="teacherDashboard__groups">
+									{/* voorbeeld van groepen, deze zou normaal uit de database komen */}
+									{[1, 2, 3, 4].map((group) => (
+										<div className="teacherDashboard__group" key={group}>
+											<div className="teacherDashboard__group-name">Groep {group}</div>
+											<div className="teacherDashboard__group-students">Aantal studenten: 5</div>
+											<a className="teacherDashboard__group-edit">Bekijk Groep</a>
+											<a className="teacherDashboard__group-delete">Verwijder Groep</a>
+										</div>
+									))}
 								</div>
 								<button class="teacherDashboard__button">Maak nieuwe groep aan</button>
 							</div>
 							<div class="teacherDashboard__end">
 								<div class="teacherDashboard__diagram">
-									<div style={{ width: 200, height: 200 }}>
-										{/* <p>Gemiddelde aanwezigheid:</p> */}
+									<div style={{ width: 250, height: 250 }}>
 										<CircularProgressbar
-											value={percentage}
-											text={`Algemeen\n${percentage}%`}
+											//percentage van de functie hier boven
+											value={averagePercentage}
+											text={`Algemeen\n${averagePercentage}%`}
 											styles={{
 												text: {
 													lineHeight: 1,
@@ -105,7 +108,7 @@ const TeacherDashboard = () => {
 										<label for="weekEnd">Week tot</label>
 										<input type="number" id="weekEnd" name="weekEnd" min="1" max="52" />
 									</div>
-									<div class="teacherDashboard__filter-group">
+									{/* <div class="teacherDashboard__filter-group">
 										<label for="periode">Periode</label>
 										<select id="periode" name="periode">
 											<option value="">-- Kies --</option>
@@ -114,7 +117,7 @@ const TeacherDashboard = () => {
 											<option value="3">Periode 3</option>
 											<option value="4">Periode 4</option>
 										</select>
-									</div>
+									</div> */}
 									<div class="teacherDashboard__filter-group">
 										<label for="datum">Datum</label>
 										<input type="date" id="datum" name="datum" />
