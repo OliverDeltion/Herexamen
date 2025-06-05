@@ -8,6 +8,27 @@ import "../common/Buttons.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 const percentage = 75;
+// categorie bepaling op basis van percentage
+const getCategorie = (percentage) => {
+	if (percentage === 0) return "Geen aanwezigheid";
+	if (percentage >= 100) return "Perfect";
+	if (percentage >= 95) return "Excellent";
+	if (percentage >= 80) return "Goed";
+	if (percentage >= 65) return "Voldoende";
+	if (percentage >= 50) return "Onvoldoende";
+	return "Fail";
+};
+
+// css klasse toevoegen op basis van percentage
+const getPercentageClass = (percentage) => {
+	if (percentage === 0) return "percentage--afwezig";
+	if (percentage >= 100) return "percentage--perfect";
+	if (percentage >= 95) return "percentage--excellent";
+	if (percentage >= 80) return "percentage--goed";
+	if (percentage >= 65) return "percentage--voldoende";
+	if (percentage >= 50) return "percentage--onvoldoende";
+	return "percentage--fail";
+};
 const TeacherDashboard = () => {
 	const [data, setData] = useState([]);
 	useEffect(() => {
@@ -19,7 +40,7 @@ const TeacherDashboard = () => {
 		data();
 	}, []);
 	return (
-		<div class="test">
+		<div class="bg-color">
 			<div class="container">
 				<div class="teacherDashboard">
 					<div class="teacherDashboard__container">
@@ -105,18 +126,45 @@ const TeacherDashboard = () => {
 									</div>
 								</form>
 							</div>
-							<div class="teacherDashboard__table">
-								<table class="teacherDashboard__table-element">
-									{data.map((student, index) => (
-										<div key={index}>
-											<tr>
-												<td>{student.studentnummer}</td>
-												<td>{student.percentage}</td>
-												<td>{student.aanwezigheid}</td>
-												<td>{student.roosterminuten}</td>
-											</tr>
-										</div>
-									))}
+							<div className="teacherDashboard__table">
+								<table className="teacherDashboard__table-element">
+									<thead>
+										<tr>
+											<th>Studentnummer</th>
+											<th>Aanwezigheid</th>
+											<th>Rooster</th>
+											<th>Jaar</th>
+											<th>Percentage</th>
+											<th>Categorie</th>
+											<th>Gestopt?</th>
+										</tr>
+									</thead>
+									<tbody>
+										{data.map((student, index) => {
+											const percentage = student.percentage ?? 0;
+											const categorie = getCategorie(percentage);
+											const percentageClass = getPercentageClass(percentage);
+
+											return (
+												<tr key={index}>
+													<td>{student.studentnummer}</td>
+													<td>{student.aanwezigheid}</td>
+													<td>{student.roosterminuten}</td>
+													<td>{student.jaar ?? "2025"}</td>
+													<td className={`percentage ${percentageClass}`}>{percentage}%</td>
+													<td className={percentageClass}>{categorie}</td>
+													<td>
+														<input
+															type="checkbox"
+															name={`gestopt-${student.studentnummer}`}
+															className="teacherDashboard__checkbox"
+															defaultChecked={student.gestopt ?? false}
+														/>
+													</td>
+												</tr>
+											);
+										})}
+									</tbody>
 								</table>
 							</div>
 						</div>

@@ -143,6 +143,8 @@
 
 .teacherDashboard__table {
 	overflow-x: scroll;
+	overflow-y: scroll;
+	max-height: 30rem;
 	padding: 1rem;
 	background-color: var(--color-background);
 	border: 1px solid #ddd;
@@ -154,4 +156,32 @@
 
 .teacherDashboard__table-element {
 	width: 100%;
+}
+
+.percentage {
+	text-align: center;
+	font-weight: bold;
+}
+
+.percentage--perfect {
+	color: #0a7d00;
+}
+.percentage--excellent {
+	color: #2e8b57;
+}
+.percentage--goed {
+	color: #4caf50;
+}
+.percentage--voldoende {
+	color: #ffa500;
+}
+.percentage--onvoldoende {
+	color: #ff7043;
+}
+.percentage--kritiek {
+	color: #d32f2f;
+}
+.percentage--afwezig {
+	color: #000;
+	background-color: #fdd;
 }
