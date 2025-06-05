@@ -136,6 +136,7 @@ const TeacherDashboard = () => {
 											<th>Studentnummer</th>
 											<th>Aanwezigheid</th>
 											<th>Rooster</th>
+											<th>Week</th>
 											<th>Jaar</th>
 											<th>Percentage</th>
 											<th>Categorie</th>
@@ -153,7 +154,7 @@ const TeacherDashboard = () => {
 													<td>{student.studentnummer}</td>
 													<td>{student.aanwezigheid}</td>
 													<td>{student.roosterminuten}</td>
-													<td>{student.week}</td>
+													<td>{student.week ?? "-"}</td>
 													<td>{student.jaar ?? "2025"}</td>
 													<td className={`percentage ${percentageClass}`}>{percentage}%</td>
 													<td className={percentageClass}>{categorie}</td>
