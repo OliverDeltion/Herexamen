@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import NavigationBar from "../common/NavigationBar";
 import "./TeacherDashboard.css";
 import "../../Global.css";
 import "../common/Buttons.css";
