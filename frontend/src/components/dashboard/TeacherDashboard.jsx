@@ -136,10 +136,10 @@ const TeacherDashboard = () => {
 											<strong>{filteredData.filter((s) => getCategorie(s.percentage ?? 0) === "Fail").length}</strong>
 										</li>
 										<li>
-											<i className="fas fa-percentage"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
+											<i className="fas fa-chart-line"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
 										</li>
 										<li>
-											<i className="fas fa-percentage"></i> Bestand: <strong>{averagePercentage}%</strong>
+											<i className="fas fa-file-alt"></i> Bestand: <strong>{averagePercentage}%</strong>
 										</li>
 									</ul>
 								</div>
