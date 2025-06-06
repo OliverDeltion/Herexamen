@@ -116,12 +116,18 @@
 		align-items: center;
 		padding: 0.5rem 0;
 		border-bottom: 1px solid #ddd;
+		i {
+			display: none;
+		}
 	}
 }
 
 @media screen and (min-width: 900px) {
 	.teacherDashboard__kpi {
 		margin: 0;
+		li i {
+			display: block;
+		}
 	}
 }
 
@@ -165,6 +171,7 @@
 	border: 1px solid #ccc;
 	border-radius: 10px;
 	font-size: 1rem;
+	width: 100%;
 }
 
 .teacherDashboard__filter-button {
