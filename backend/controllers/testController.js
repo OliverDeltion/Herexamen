@@ -110,6 +110,32 @@ async function getStudentStats(req, res) {
   }
 }
 
+async function updateAndPublishAttendance(req, res) {
+  const { studentnummer, week, jaar, aanwezigheid, rooster } = req.body;
+
+  if (!studentnummer || !week || !jaar || aanwezigheid == null || rooster == null) {
+    return res.status(400).json({ error: "Ontbrekende gegevens" });
+  }
+
+  try {
+    const [result] = await pool.query(`
+      UPDATE attendance
+      SET aanwezigheid = ?, 
+          roosterminuten = ?, 
+          published_at = NOW()
+      WHERE studentnummer = ? AND week = ? AND jaar = ?
+    `, [aanwezigheid, rooster, studentnummer, week, jaar]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Geen bijbehorend record gevonden" });
+    }
+
+    res.json({ message: "Geüpdatet én gepubliceerd", studentnummer, week, jaar });
+  } catch (err) {
+    console.error("Fout bij update/publish:", err);
+    res.status(500).json({ error: "Interne fout bij update/publish" });
+  }
+}
 
 async function getAllStudentPercentages(req, res) {
   try {
