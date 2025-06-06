@@ -27,19 +27,14 @@ const StudentDashboard = ({ studentData }) => {
     const [filterEnd, setFilterEnd] = useState(0);
     const [selectedWeeks, setSelectedWeeks] = useState([]);
 
-    // Voorkomt het laden van de dashboard als de studenten data nog niet is geladen - Nirmin
-    if (!student || !randomWeeks || randomWeeks.length === 0) {
-        return <div>Dashboard laden...</div>;
-    }
-
     // Laad de student data - Nirmin
     useEffect(() => {
         if (studentData) {
             setStudent({
                 naam: studentData.naam || "Naam student",
-                studentNumber: studentData.studentnummer,
+                studentNumber: studentData.studentNumber,
                 profilePhoto: "https://via.placeholder.com/120", // Placeholder image
-                // In het echt zou je hier de echte URL van een profielfoto gebruiken
+                // In het echt zou je hier de echte URL van een profielfoto gebruiken - Nirmin
             });
         }
         
@@ -47,17 +42,23 @@ const StudentDashboard = ({ studentData }) => {
         fetch("http://localhost:3000/api/get/students")
             .then(res => res.json())
             .then(data => {
-                const studentWeeks = data.filter(w => w.studentnummer === studentData.studentnummer);
+                const studentWeeks = data.filter(w => w.studentnummer === studentData.studentNumber);
                 setRandomWeeks(studentWeeks);
                 setSelectedWeeks(studentWeeks.map((_, i) => i));
                 setFilterEnd(studentWeeks.length - 1);
             });
     }, [studentData]);
 
+       // Voorkomt het laden van de dashboard als de studenten data nog niet is geladen - Nirmin
+    if (!student || !randomWeeks || randomWeeks.length === 0) {
+        return <div>Dashboard laden...</div>;
+    }
 
     const sortedWeeks = [...randomWeeks].sort((a, b) => a.week - b.week);
     const currentWeek = sortedWeeks[weekIndex];
-    const percentage = Math.round((currentWeek.attendance / currentWeek.schedule) * 100);
+    const percentage = currentWeek?.roosterminuten
+        ? Math.round((currentWeek.aanwezigheid / currentWeek.roosterminuten) * 100)
+        : 0;
     const colorClass = getAttendanceColor(percentage);
 
     const toggleWeek = (i) => {
@@ -75,12 +76,12 @@ const StudentDashboard = ({ studentData }) => {
         datasets: [
             {
                 label: "Aanwezigheid (min)",
-                data: sortedWeeks.map(w => w.attendance),
+                data: sortedWeeks.map(w => w.aanwezigheid),
                 backgroundColor: "#27ae60",
             },
             {
                 label: "Rooster (min)",
-                data: sortedWeeks.map(w => w.schedule),
+                data: sortedWeeks.map(w => w.roosterminuten),
                 backgroundColor: "#bdbdbd",
             },
         ],
@@ -91,12 +92,12 @@ const StudentDashboard = ({ studentData }) => {
         datasets: [
             {
                 label: "Aanwezigheid (min)",
-                data: filteredWeeks.map(w => w.attendance),
+                data: filteredWeeks.map(w => w.aanwezigheid),
                 backgroundColor: "#27ae60",
             },
             {
                 label: "Rooster (min)",
-                data: filteredWeeks.map(w => w.schedule),
+                data: filteredWeeks.map(w => w.roosterminuten),
                 backgroundColor: "#bdbdbd",
             },
         ],
@@ -123,19 +124,19 @@ const StudentDashboard = ({ studentData }) => {
     };
 
     const avgPercentage = Math.round(
-        sortedWeeks.reduce((sum, w) => sum + w.attendance, 0) /
-        sortedWeeks.reduce((sum, w) => sum + w.schedule, 0) * 100
+        sortedWeeks.reduce((sum, w) => sum + w.aanwezigheid, 0) /
+        sortedWeeks.reduce((sum, w) => sum + w.roosterminuten, 0) * 100
     );
 
     // Calculate present and absent time for circular progress
-    const totalAttendance = sortedWeeks.reduce((sum, w) => sum + w.attendance, 0);
-    const totalSchedule = sortedWeeks.reduce((sum, w) => sum + w.schedule, 0);
+    const totalAttendance = sortedWeeks.reduce((sum, w) => sum + w.aanwezigheid, 0);
+    const totalSchedule = sortedWeeks.reduce((sum, w) => sum + w.roosterminuten, 0);
     const presentPercentage = Math.round((totalAttendance / totalSchedule) * 100);
     const absent = totalSchedule - totalAttendance;
 
     // Bereken aanwezigheid/afwezigheid voor geselecteerde weken
-    const filteredAttendance = filteredWeeks.reduce((sum, w) => sum + w.attendance, 0);
-    const filteredSchedule = filteredWeeks.reduce((sum, w) => sum + w.schedule, 0);
+    const filteredAttendance = filteredWeeks.reduce((sum, w) => sum + w.aanwezigheid, 0);
+    const filteredSchedule = filteredWeeks.reduce((sum, w) => sum + w.roosterminuten, 0);
     const filteredPresentPercentage = filteredSchedule > 0
         ? Math.round((filteredAttendance / filteredSchedule) * 100)
         : 0;
@@ -159,7 +160,7 @@ const StudentDashboard = ({ studentData }) => {
                         <strong>Studentnummer:</strong> {student.studentNumber}
                     </p>
                     <p>
-                        <strong>Aanwezigheid (week):</strong> {currentWeek.attendance} min
+                        <strong>Aanwezigheid (week):</strong> {currentWeek.aanwezigheid} min
                         {" = "}
                         <span style={{ fontWeight: "bold" }}>
                             {percentage}%
@@ -167,13 +168,13 @@ const StudentDashboard = ({ studentData }) => {
                         </span>
                     </p>
                     <p>
-                        <strong>Rooster (week):</strong> {currentWeek.schedule} min
+                        <strong>Rooster (week):</strong> {currentWeek.roosterminuten} min
                     </p>
                     <p>
                         <strong>Week:</strong> {currentWeek.week}
                     </p>
                     <p>
-                        <strong>Jaar:</strong> {currentWeek.year}
+                        <strong>Jaar:</strong> {currentWeek.jaar}
                     </p>
                     <span className="status" style={{ textTransform: "capitalize" }}>
                         Aanwezigheid: <span className={`status-color-${colorClass}`}>{colorClass}</span>
@@ -297,12 +298,12 @@ const StudentDashboard = ({ studentData }) => {
                             datasets: [
                                 {
                                     label: "Aanwezigheid (min)",
-                                    data: currentWeek.days.map(d => d.attendance),
+                                    data: currentWeek.days.map(d => d.aanwezigheid),
                                     backgroundColor: "#27ae60",
                                 },
                                 {
                                     label: "Rooster (min)",
-                                    data: currentWeek.days.map(d => d.schedule),
+                                    data: currentWeek.days.map(d => d.roosterminuten),
                                     backgroundColor: "#bdbdbd",
                                 },
                             ],
