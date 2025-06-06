@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
+import axios from "axios";
+
 
 const SpreadsheetImport = () => {
     const [fileName, setFileName] = useState("");
     const [data, setData] = useState([]);
 
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
         setFileName(file.name);
-
+        fileUpload(file);
         const reader = new FileReader();
         reader.onload = (evt) => {
             const bstr = evt.target.result;
@@ -21,6 +24,16 @@ const SpreadsheetImport = () => {
         };
         reader.readAsBinaryString(file);
     };
+
+    const fileUpload = (file) => {
+        const form = new FormData();
+        form.append('file', file);
+        axios.post('http://localhost:3000/api/upload', form )
+        console.log(file)
+    }
+
+
+
 
     return (
         <div style={{ padding: "2rem", textAlign: "center" }}>

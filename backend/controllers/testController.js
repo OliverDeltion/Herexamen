@@ -145,6 +145,7 @@ async function getAllStudentPercentages(req, res) {
     studentnummer,
     week,
     jaar,
+    upload_bestand,
     SUM(aanwezigheid) AS totaal_aanwezigheid,
     SUM(roosterminuten) AS totaal_roosterminuten
   FROM 
@@ -164,6 +165,7 @@ async function getAllStudentPercentages(req, res) {
       data.push({
         week: row.week,
         jaar: row.jaar,
+        upload_bestand: row.upload_bestand,
         studentnummer: row.studentnummer,
         percentage,
         aanwezigheid: aanwezig,
