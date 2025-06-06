@@ -138,6 +138,9 @@ const TeacherDashboard = () => {
 										<li>
 											<i className="fas fa-percentage"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
 										</li>
+										<li>
+											<i className="fas fa-percentage"></i> Bestand: <strong>{averagePercentage}%</strong>
+										</li>
 									</ul>
 								</div>
 							</div>
