@@ -231,13 +231,27 @@ const StudentDashboard = ({ studentData }) => {
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                 </div>
-                <Bar
-                    data={filteredBarData}
-                    options={barOptions}
-                    height={200}
-                    width={400}
-                    onClick={() => setModalOpen(true)}
-                />
+                <div style={{ position: "relative", width: 320, height: 160, margin: "0 auto" }}>
+                    <Bar
+                        data={filteredBarData}
+                        options={barOptions}
+                        height={160}
+                        width={320}
+                    />
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            cursor: "pointer",
+                            zIndex: 2,
+                        }}
+                        title="Klik om te vergroten"
+                        onClick={() => setModalOpen(true)}
+                    />
+                </div>
                 <div className="dashboard-average-percentage">
                 </div>
                 <div className="dashboard-circular-progress" style={{ display: "flex", gap: "2rem", justifyContent: "center" }}>
@@ -280,18 +294,52 @@ const StudentDashboard = ({ studentData }) => {
                     isOpen={modalOpen}
                     onRequestClose={() => setModalOpen(false)}
                     style={{
+                        overlay: {
+                            backgroundColor: "rgba(0,0,0,0.45)",
+                            zIndex: 2000,
+                        },
                         content: {
-                            maxWidth: "800px",
-                            margin: "auto",
-                            height: "550px",
-                            overflow: "hidden"
+                            maxWidth: "700px",
+                            width: "96%",
+                            top: "50%",
+                            left: "50%",
+                            right: "auto",
+                            bottom: "auto",
+                            marginRight: "-50%",
+                            transform: "translate(-50%, -50%)",
+                            height: "400px",
+                            borderRadius: "14px",
+                            boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+                            padding: "2rem 2.5rem",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            overflowY: "hidden",
                         }
                     }}
                     ariaHideApp={false}
                 >
-                    <h3>Uitvergrote grafiek</h3>
-                    <Bar data={barData} options={barOptions} height={400} width={700} />
-                    <button onClick={() => setModalOpen(false)}>Sluiten</button>
+                    {/* Sluitknop rechtsboven */}
+                    <button
+                        onClick={() => setModalOpen(false)}
+                        style={{
+                            position: "absolute",
+                            top: 16,
+                            right: 20,
+                            background: "transparent",
+                            border: "none",
+                            fontSize: 28,
+                            color: "red",
+                            cursor: "pointer",
+                            lineHeight: 1,
+                        }}
+                        aria-label="Sluiten"
+                    >
+                        &times;
+                    </button>
+                    <h3 style={{ marginBottom: 18, fontSize: 20 }}>Uitvergrote grafiek</h3>
+                    <Bar data={barData} options={barOptions} height={300} width={600} />
                 </ReactModal>
             </div>
             {currentWeek.days && (
