@@ -149,7 +149,16 @@ const TeacherDashboard = () => {
 									<div style={{ width: "100%", maxWidth: 250, height: "auto" }}>
 										<CircularProgressbar
 											value={filteredAveragePercentage}
-											text={`Aanwezigheid\n${filteredAveragePercentage}%`}
+											text={
+												<>
+													<tspan x="50%" dy="0em">
+														Aanwezigheid
+													</tspan>
+													<tspan x="50%" dy="1.2em">
+														{filteredAveragePercentage}%
+													</tspan>
+												</>
+											}
 											styles={{
 												text: {
 													fontSize: "10px",
