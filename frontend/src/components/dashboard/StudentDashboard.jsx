@@ -29,7 +29,7 @@ const StudentDashboard = ({ studentData }) => {
 
     // Voorkomt het laden van de dashboard als de studenten data nog niet is geladen - Nirmin
     if (!student || !randomWeeks || randomWeeks.length === 0) {
-        return <div>Loading dashboard...</div>;
+        return <div>Dashboard laden...</div>;
     }
 
     // Laad de student data - Nirmin
