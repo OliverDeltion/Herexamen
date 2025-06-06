@@ -66,6 +66,14 @@
     font-size: 0.9rem;
 }
 
+.login-modal-buttons {
+    display: flex;
+    gap: 0.7rem;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Smooth fade-in */
 @keyframes fadeIn {
     from {

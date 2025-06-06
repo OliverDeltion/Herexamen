@@ -33,7 +33,10 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
                 onChange={(e) => setStudentNumber(e.target.value)}
                 />
                 {error && <p className="error-text">{error}</p>}
-                <button onClick={handleLogin}>Login</button>
+                <div className="login-modal-buttons">
+                    <button onClick={onClose}>Annuleer</button>
+                    <button onClick={handleLogin}>Login</button>
+                </div>
             </div>
         </div>
     );

@@ -57,9 +57,12 @@ const DashboardPage = () => {
 
 				{/* Login Modal voor student */}
 				<LoginModal
-					isOpen={showLogin}
-					onClose={() => setShowLogin(false)}
-					onLogin={handleLogin}
+    isOpen={showLogin}
+    onClose={() => {
+        setShowLogin(false);
+        setSelectedRole(null); // Ga terug naar het beginscherm
+    }}
+    onLogin={handleLogin}
 				/>
 				{/* Modal voor gekozen rol */}
 				<Modal isOpen={selectedRole === "docent" || studentData} onClose={handleBack}>
