@@ -8,17 +8,6 @@ import ReactModal from "react-modal";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const weeks = [
-    {
-        week: 22,
-        year: 2025,
-        schedule: 500,
-        attendance: 240
-    },
-    { attendance: 300, schedule: 500, week: 23, year: 2025 },
-    { attendance: 345, schedule: 500, week: 24, year: 2025 },
-];
-
 function getAttendanceColor(percentage) {
     if (percentage === 100) return "perfect";
     if (percentage >= 95) return "excellent";
@@ -32,12 +21,18 @@ function getAttendanceColor(percentage) {
 const StudentDashboard = ({ studentData }) => {
     const [student, setStudent] = useState(null);
     const [weekIndex, setWeekIndex] = useState(0);
-    const [randomWeeks, setRandomWeeks] = useState(weeks);
+    const [randomWeeks, setRandomWeeks] = useState();
     const [modalOpen, setModalOpen] = useState(false);
     const [filterStart, setFilterStart] = useState(0);
-    const [filterEnd, setFilterEnd] = useState(weeks.length - 1);
-    const [selectedWeeks, setSelectedWeeks] = useState(randomWeeks.map((_, i) => i));
+    const [filterEnd, setFilterEnd] = useState(0);
+    const [selectedWeeks, setSelectedWeeks] = useState([]);
 
+    // Voorkomt het laden van de dashboard als de studenten data nog niet is geladen - Nirmin
+    if (!student || !randomWeeks || randomWeeks.length === 0) {
+        return <div>Loading dashboard...</div>;
+    }
+
+    // Laad de student data - Nirmin
     useEffect(() => {
         if (studentData) {
             setStudent({
@@ -48,12 +43,15 @@ const StudentDashboard = ({ studentData }) => {
             });
         }
         
-        // Randomize attendance for each week
-        const randomized = weeks.map(w => ({
-            ...w,
-            attendance: Math.floor(Math.random() * (w.schedule + 1)), // 0 t/m schedule
-        }));
-        setRandomWeeks(randomized);
+        // Laat de echte week data per filter zien van de student - Nirmin
+        fetch("http://localhost:3000/api/get/students")
+            .then(res => res.json())
+            .then(data => {
+                const studentWeeks = data.filter(w => w.studentnummer === studentData.studentnummer);
+                setRandomWeeks(studentWeeks);
+                setSelectedWeeks(studentWeeks.map((_, i) => i));
+                setFilterEnd(studentWeeks.length - 1);
+            });
     }, [studentData]);
 
 
