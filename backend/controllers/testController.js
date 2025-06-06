@@ -82,6 +82,8 @@ async function getStudentStats(req, res) {
   try {
     const [rows] = await pool.query(
       `SELECT
+          week,
+          jaar,
          studentnummer,
          SUM(aanwezigheid) AS totaal_aanwezig,
          SUM(roosterminuten) AS totaal_rooster
@@ -96,12 +98,12 @@ async function getStudentStats(req, res) {
       return res.status(404).json({ error: "Student niet gevonden." });
     }
     //  Pas daarna destructure je het resultaat
-    const { totaal_aanwezig, totaal_rooster } = rows;
+    const { week, jaar, totaal_aanwezig, totaal_rooster } = rows;
 
     const percentage = Math.round((totaal_aanwezig / totaal_rooster) * 1000) / 10;
     const categorie = bepaalCategorie(percentage);
 
-    res.json({ studentnummer, percentage, categorie });
+    res.json({ week, jaar, studentnummer, percentage, categorie, totaal_aanwezig,totaal_rooster });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Interne fout bij ophalen student stats" });
