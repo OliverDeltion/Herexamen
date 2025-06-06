@@ -13,18 +13,19 @@ const DashboardPage = () => {
 
 	const [selectedRole, setSelectedRole] = useState(null);
 	const [studentData, setStudentData] = useState(null);
+	const [showLogin, setShowLogin] = useState(false);
 	const [isLoginOpen, setIsLoginOpen] = useState(true);
 
 	    const handleSelectedRole = (role) => {
 			setSelectedRole(role);
 			if (role === "student") {
-				setIsLoginOpen(true);
+				setShowLogin(true); // Laat Login Modal zien - Nirmin
 			}
     };
 
 	const handleLogin = (data) => {
 		setStudentData(data);
-		setIsLoginOpen(false);
+		setShowLogin(false); // Verberg Login Modal na succesvolle login - Nirmin
 	};
 
     const handleBack = () => {
@@ -56,8 +57,8 @@ const DashboardPage = () => {
 
 				{/* Login Modal voor student */}
 				<LoginModal
-					isOpen={isLoginOpen}
-					onClose={handleBack}
+					isOpen={showLogin}
+					onClose={() => setShowLogin(false)}
 					onLogin={handleLogin}
 				/>
 				{/* Modal voor gekozen rol */}
