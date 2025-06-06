@@ -10,8 +10,11 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
             const res = await fetch(`http://localhost:3000/api/students/${studentNumber}/stats`);
             if (!res.ok) throw new Error("Ongeldige studentnummer");
             const data = await res.json();
-            onLogin(data);
-            onClose();
+            
+            onLogin({
+                studentNumber: data.studentnummer,
+                naam: data.naam || "Naam student",
+            })
         } catch (err) {
             setError("Studentnummer is ongeldig of niet gevonden");
         }
