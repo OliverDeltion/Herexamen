@@ -29,7 +29,7 @@ function getAttendanceColor(percentage) {
     return "fail";
 }
 
-const StudentDashboard = () => {
+const StudentDashboard = ({ studentData }) => {
     const [student, setStudent] = useState(null);
     const [weekIndex, setWeekIndex] = useState(0);
     const [randomWeeks, setRandomWeeks] = useState(weeks);
@@ -39,24 +39,23 @@ const StudentDashboard = () => {
     const [selectedWeeks, setSelectedWeeks] = useState(randomWeeks.map((_, i) => i));
 
     useEffect(() => {
-        fetch("https://randomuser.me/api/")
-            .then(res => res.json())
-            .then(data => {
-                const user = data.results[0];
-                setStudent({
-                    naam: `${user.name.first} ${user.name.last}`,
-                    studentNumber: user.login.username.toUpperCase(),
-                    profilePhoto: user.picture.large,
-                });
+        if (studentData) {
+            setStudent({
+                naam: studentData.naam || "Naam student",
+                studentNumber: studentData.studentnummer,
+                profilePhoto: "https://via.placeholder.com/120", // Placeholder image
+                // In het echt zou je hier de echte URL van een profielfoto gebruiken
             });
-
+        }
+        
         // Randomize attendance for each week
         const randomized = weeks.map(w => ({
             ...w,
             attendance: Math.floor(Math.random() * (w.schedule + 1)), // 0 t/m schedule
         }));
         setRandomWeeks(randomized);
-    }, []);
+    }, [studentData]);
+
 
     const sortedWeeks = [...randomWeeks].sort((a, b) => a.week - b.week);
     const currentWeek = sortedWeeks[weekIndex];

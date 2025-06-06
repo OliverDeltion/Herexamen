@@ -77,7 +77,7 @@ const DashboardPage = () => {
 						<button onClick={handleBack} className="docent-terug">
 							Terug
 						</button>
-						<StudentDashboard />
+						<StudentDashboard studentData={studentData} />
 							</>
 						)}
 					</div>
