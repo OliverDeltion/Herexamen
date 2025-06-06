@@ -104,7 +104,7 @@ const TeacherDashboard = () => {
 								<div class="teacherDashboard__start-header">
 									<h3>Docent Dashboard</h3>
 									<div className="navbar__end">
-										<a className="navbar__button" href="#">
+										<a className="navbar__button" href="/import">
 											Importeer Spreadsheet
 										</a>
 									</div>

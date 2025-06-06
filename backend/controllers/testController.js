@@ -26,7 +26,8 @@ async function handleUpload(req, res) {
 
     let inserts = 0;
     let updates = 0;
-
+    const originalName = file.originalname;
+    console.log(originalName);
     for (const row of rows) {
       const { studentnummer, aanwezigheid, rooster, week, jaar } = row;
 
@@ -35,8 +36,8 @@ async function handleUpload(req, res) {
       console.log(results);
       if (!results) {
         await pool.query(
-          'INSERT INTO attendance (studentnummer, aanwezigheid, roosterminuten, week, jaar) VALUES (?, ?, ?, ?, ?)',
-          [studentnummer, aanwezigheid, rooster, week, jaar]
+          'INSERT INTO attendance (studentnummer, aanwezigheid, roosterminuten, week, jaar, upload_bestand) VALUES (?, ?, ?, ?, ?, ?)',
+          [studentnummer, aanwezigheid, rooster, week, jaar, originalName]
         );
       }
       else {
@@ -110,32 +111,32 @@ async function getStudentStats(req, res) {
   }
 }
 
-async function updateAndPublishAttendance(req, res) {
-  const { studentnummer, week, jaar, aanwezigheid, rooster } = req.body;
+// async function updateAndPublishAttendance(req, res) {
+//   const { studentnummer, week, jaar, aanwezigheid, rooster } = req.body;
 
-  if (!studentnummer || !week || !jaar || aanwezigheid == null || rooster == null) {
-    return res.status(400).json({ error: "Ontbrekende gegevens" });
-  }
+//   if (!studentnummer || !week || !jaar || aanwezigheid == null || rooster == null) {
+//     return res.status(400).json({ error: "Ontbrekende gegevens" });
+//   }
 
-  try {
-    const [result] = await pool.query(`
-      UPDATE attendance
-      SET aanwezigheid = ?, 
-          roosterminuten = ?, 
-          published_at = NOW()
-      WHERE studentnummer = ? AND week = ? AND jaar = ?
-    `, [aanwezigheid, rooster, studentnummer, week, jaar]);
+//   try {
+//     const [result] = await pool.query(`
+//       UPDATE attendance
+//       SET aanwezigheid = ?, 
+//           roosterminuten = ?, 
+//           published_at = NOW()
+//       WHERE studentnummer = ? AND week = ? AND jaar = ?
+//     `, [aanwezigheid, rooster, studentnummer, week, jaar]);
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Geen bijbehorend record gevonden" });
-    }
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ error: "Geen bijbehorend record gevonden" });
+//     }
 
-    res.json({ message: "Geüpdatet én gepubliceerd", studentnummer, week, jaar });
-  } catch (err) {
-    console.error("Fout bij update/publish:", err);
-    res.status(500).json({ error: "Interne fout bij update/publish" });
-  }
-}
+//     res.json({ message: "Geüpdatet én gepubliceerd", studentnummer, week, jaar });
+//   } catch (err) {
+//     console.error("Fout bij update/publish:", err);
+//     res.status(500).json({ error: "Interne fout bij update/publish" });
+//   }
+// }
 
 async function getAllStudentPercentages(req, res) {
   try {
@@ -186,4 +187,4 @@ async function getAllStudentPercentages(req, res) {
 }
 
 
-module.exports = { getUsers, getAttendance, handleUpload, test, getStudentStats, getAllStudentPercentages };
+module.exports = { getUsers, getAttendance, handleUpload, test, getStudentStats, getAllStudentPercentages  };
