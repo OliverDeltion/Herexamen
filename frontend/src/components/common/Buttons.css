@@ -2,27 +2,37 @@
 .downloadButton,
 .spreadsheetButton {
 	padding: 1rem;
-	/* border: 1px solid var(--accent-orange); */
 	border-radius: 5px;
 	width: auto;
 	color: var(--white);
-	background-color: var(--primary-blue);
+	background-color: var(--color-primary);
 }
 
 .filterButton:hover,
 .downloadButton:hover,
 .spreadsheetButton:hover {
-	background-color: var(--primary-blue-hover);
+	background-color: var(--color-accent);
 	transition: background-color 0.2s ease;
 }
 
 .navbar__button {
-	background-color: var(--accent-orange);
+	background-color: var(--color-primary);
 	text-decoration: none;
 	font-weight: normal;
-	color: white;
+	color: var(--white);
 	padding: 0.3rem 0.5rem;
-	/* border: 1px solid rgba(0, 0, 0, 0.282); */
 	border-radius: 5px;
 	transition: 0.2s;
+}
+
+.teacherDashboard__button {
+	background-color: var(--color-primary);
+	text-decoration: none;
+	font-weight: normal;
+	color: var(--white);
+	padding: 0.3rem 0.5rem;
+	border-radius: 5px;
+	transition: 0.2s;
+	margin-top: 1rem;
+	bottom: 0;
 }

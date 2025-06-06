@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import NavigationBar from "../components/common/NavigationBar";
 import Footer from "../components/common/Footer";
 import StudentDashboard from "../components/dashboard/StudentDashboard";
 import TeacherDashboard from "../components/dashboard/TeacherDashboard";
+import Modal from "../components/common/Modal";
 
 //Styles
 import "../styles/global.css";
@@ -20,43 +20,54 @@ const DashboardPage = () => {
         setSelectedRole(null);
     };
 
-    return (
-        <>
-            <NavigationBar />
-            
-            <div className="text-center">
-                {selectedRole === null && (
-                    <div className="accounts">
-                        <h1 className="text-h1">Selecteer account</h1>
-                        <button onClick={() => handleSelectedRole("student")} className="student-button">
-                            Student
-                        </button>
-                        <br />
-                        <button onClick={() => handleSelectedRole("docent")} className="docent-button">
-                            Docent
-                        </button>
-                    </div>
-                )}
-                {selectedRole === "student" && (
-                    <>
-                        <button onClick={handleBack} className="student-terug">
-                            Terug
-                        </button>
-                        <StudentDashboard />
-                    </>
-                )}
-                {selectedRole === "docent" && (
-                    <>
-                        <p>Geselecteerd: {selectedRole}</p>
-                        <button onClick={handleBack} className="docent-terug">
-                            Terug
-                        </button>
-                        <TeacherDashboard />
-                    </>
-                )}
-            </div>
-        </>
-    );
+	return (
+		<>	
+			<div className="dashboard-container">
+				<header className="dashboard-header">
+					<h1 className="dashboard-title">Dashboard AARdata</h1>
+					</header>
+				{selectedRole === null && (
+					<>
+						<div className="dashboard-card">
+						<h2 className="dashboard-heading">Selecteer account</h2>
+						<div className="dashboard-buttons">
+						<button onClick={() => handleSelectedRole("student")} className="btn student-btn">
+							Student
+						</button>
+						<button onClick={() => handleSelectedRole("docent")} className="btn docent-btn">
+							Docent
+								</button>
+								</div>
+						</div>
+					</>
+				)}
+				<Modal isOpen={!!selectedRole} onClose={handleBack}>
+					<div className="dashboard-modal-content">
+				{selectedRole === "student" && (
+							<>
+						<button onClick={handleBack} className="student-terug">
+							Terug
+						</button>
+						<StudentDashboard />
+							</>
+				)}
+
+				{selectedRole === "docent" && (
+							<>
+						<button onClick={handleBack} className="docent-terug">
+							Terug
+						</button>
+						<TeacherDashboard />
+							</>
+						)}
+					</div>
+				</Modal>
+			</div>
+			<Footer />
+		
+		</>
+		
+	);
 };
 
 export default DashboardPage;

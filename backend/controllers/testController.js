@@ -42,8 +42,8 @@ async function handleUpload(req, res) {
       else {
         await pool.query(
           `UPDATE attendance
-   SET aanwezigheid = ?, roosterminuten = ?
-   WHERE studentnummer = ? AND week = ? AND jaar = ?`,
+           SET aanwezigheid = ?, roosterminuten = ?
+            WHERE studentnummer = ? AND week = ? AND jaar = ?`,
           [aanwezigheid, rooster, studentnummer, week, jaar]
         );
 
@@ -66,5 +66,96 @@ async function getAttendance(req, res) {
     res.status(500).json({ error: "Fout bij ophalen van subjects" });
   }
 }
+function bepaalCategorie(percentage) {
+  if (percentage >= 100) return "Perfect";
+  if (percentage >= 95) return "Excellent";
+  if (percentage >= 80) return "Goed";
+  if (percentage >= 65) return "Voldoende";
+  if (percentage >= 50) return "Onvoldoende";
+  if (percentage > 0) return "Kritiek";
+  return "Geen aanwezigheid";
+}
 
-module.exports = { getUsers, getAttendance, handleUpload, test };
+async function getStudentStats(req, res) {
+  const { studentnummer } = req.params;
+
+  try {
+    const [rows] = await pool.query(
+      `SELECT
+         studentnummer,
+         SUM(aanwezigheid) AS totaal_aanwezig,
+         SUM(roosterminuten) AS totaal_rooster
+       FROM attendance
+       WHERE studentnummer = ?
+       GROUP BY studentnummer`,
+      [studentnummer]
+    );
+
+    //  Check eerst of er een resultaat is
+    if (!rows || rows.length === 0) {
+      return res.status(404).json({ error: "Student niet gevonden." });
+    }
+    //  Pas daarna destructure je het resultaat
+    const { totaal_aanwezig, totaal_rooster } = rows;
+
+    const percentage = Math.round((totaal_aanwezig / totaal_rooster) * 1000) / 10;
+    const categorie = bepaalCategorie(percentage);
+
+    res.json({ studentnummer, percentage, categorie });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Interne fout bij ophalen student stats" });
+  }
+}
+
+
+async function getAllStudentPercentages(req, res) {
+  try {
+    const rows = await pool.query(`
+  SELECT 
+    studentnummer,
+    week,
+    jaar,
+    SUM(aanwezigheid) AS totaal_aanwezigheid,
+    SUM(roosterminuten) AS totaal_roosterminuten
+  FROM 
+    attendance
+  GROUP BY 
+    studentnummer, week, jaar
+`);
+
+    let data = [];
+
+    for (let row of rows) {
+      const aanwezig = Number(row.totaal_aanwezigheid);
+      const rooster = Number(row.totaal_roosterminuten);
+
+      const percentage = Math.round((aanwezig / rooster) * 1000) / 10;
+
+      data.push({
+        week: row.week,
+        jaar: row.jaar,
+        studentnummer: row.studentnummer,
+        percentage,
+        aanwezigheid: aanwezig,
+        roosterminuten: rooster,
+      });
+    }
+
+    // Sorteer op studentnummer en week
+    data.sort((a, b) => {
+      if (a.studentnummer === b.studentnummer) {
+        return a.week - b.week;
+      }
+      return a.studentnummer.localeCompare(b.studentnummer);
+    });
+
+    res.json(data);
+  } catch (err) {
+    console.error("Fout bij ophalen:", err);
+    res.status(500).json({ error: "Fout bij ophalen van studentpercentages per week" });
+  }
+}
+
+
+module.exports = { getUsers, getAttendance, handleUpload, test, getStudentStats, getAllStudentPercentages };

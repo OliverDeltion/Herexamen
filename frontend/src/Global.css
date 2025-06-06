@@ -1,0 +1,62 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: var(--font-family);
+	font-size: 1rem;
+	color: var(--dark-gray);
+	background-color: var(--white);
+	line-height: 1.6;
+}
+
+h1 {
+	font-size: clamp(1.875rem, 2.5vw + 1rem, 3rem); /* Tussen 30 en 48px */
+	font-weight: bold;
+	color: var(--black);
+}
+
+h2 {
+	font-size: clamp(1.5rem, 2vw + 0.5rem, 2.25rem); /* ~24 - 36px */
+	font-weight: bold;
+	color: var(--black);
+}
+
+h3 {
+	font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.75rem); /* ~20 - 28px */
+	color: var(--dark-gray);
+	text-align: start;
+}
+
+h4 {
+	font-size: clamp(1.125rem, 1vw + 0.5rem, 1.5rem); /* ~18 - 24px */
+	color: var(--dark-gray);
+}
+
+h5 {
+	font-size: clamp(1rem, 0.8vw + 0.5rem, 1.25rem); /* ~16 - 20px */
+	color: var(--dark-gray);
+}
+
+p {
+	font-size: clamp(0.8125rem, 0.5vw + 0.5rem, 1.125rem); /* ~13 - 18px */
+	color: var(--dark-gray);
+}
+
+a {
+	color: var(--black);
+	text-decoration: none;
+	transition: text-decoration 0.2s ease;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.container {
+	max-width: var(--max-width);
+	margin: 0 auto;
+	padding: 0 1rem;
+}
