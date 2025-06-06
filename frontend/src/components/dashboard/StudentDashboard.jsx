@@ -30,14 +30,19 @@ const StudentDashboard = ({ studentData }) => {
     // Laad de student data - Nirmin
     useEffect(() => {
         if (studentData) {
-            setStudent({
-                naam: studentData.naam || "Naam student",
-                studentNumber: studentData.studentNumber,
-                profilePhoto: "https://via.placeholder.com/120", // Placeholder image
-                // In het echt zou je hier de echte URL van een profielfoto gebruiken - Nirmin
-            });
+            // Haal een random user op voor profielfoto en naam
+            fetch("https://randomuser.me/api/")
+                .then(res => res.json())
+                .then(randomUser => {
+                    const user = randomUser.results[0];
+                    setStudent({
+                        naam: `${user.name.first} ${user.name.last}`,
+                        studentNumber: studentData.studentNumber,
+                        profilePhoto: user.picture.large,
+                    });
+                });
         }
-        
+
         // Laat de echte week data per filter zien van de student - Nirmin
         fetch("http://localhost:3000/api/get/students")
             .then(res => res.json())
