@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./StudentDashboard.scss";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import ReactModal from "react-modal";
+import ExportButton from "../dashboard/ExportButton";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -26,6 +27,9 @@ const StudentDashboard = ({ studentData }) => {
     const [filterStart, setFilterStart] = useState(0);
     const [filterEnd, setFilterEnd] = useState(0);
     const [selectedWeeks, setSelectedWeeks] = useState([]);
+    const chartRef = useRef(null);
+    const infoRef = useRef(null);
+    const summaryRef = useRef(null);
 
     // Laad de student data - Nirmin
     useEffect(() => {
@@ -149,10 +153,13 @@ const StudentDashboard = ({ studentData }) => {
 
     if (!student) return <div>Loading...</div>;
 
+    
     return (
         <div className="student-dashboard-flex">
             <div className="student-dashboard-container">
-                <div className="student-dashboard-content">
+
+                 { /* useRef info van student voor exportPDF - Nirmin */}
+                <div ref={infoRef} className="student-dashboard-content">
                     <div className="student-profile-photo">
                         <img
                             src={student.profilePhoto}
@@ -209,7 +216,9 @@ const StudentDashboard = ({ studentData }) => {
                     </div>
                 </div>
             </div>
-            <div className="student-dashboard-average">
+
+            { /* useRef Samenvatting van student voor exportPDF - Nirmin */}
+            <div ref={summaryRef} className="student-dashboard-average">
                 <h3>Gemiddelde aanwezigheid</h3>
                 <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem", justifyContent: "center" }}>
                     {sortedWeeks.map((w, i) => (
@@ -231,13 +240,16 @@ const StudentDashboard = ({ studentData }) => {
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                 </div>
+                 { /* useRef aanwezigheidsgegevens in diagrammen exportPDF - Nirmin */}
+                <div ref={chartRef}>
                 <Bar
                     data={filteredBarData}
                     options={barOptions}
                     height={200}
                     width={400}
                     onClick={() => setModalOpen(true)}
-                />
+                    />
+                    </div>
                 <div className="dashboard-average-percentage">
                 </div>
                 <div className="dashboard-circular-progress" style={{ display: "flex", gap: "2rem", justifyContent: "center" }}>
@@ -293,6 +305,15 @@ const StudentDashboard = ({ studentData }) => {
                     <Bar data={barData} options={barOptions} height={400} width={700} />
                     <button onClick={() => setModalOpen(false)}>Sluiten</button>
                 </ReactModal>
+
+                {/* Export pdf - Nirmin */}
+                <ExportButton
+                    studentData={student}
+                    filteredWeeks={filteredWeeks}
+                    chartRef={chartRef}
+                    infoRef={infoRef}
+                    summaryRef={summaryRef}
+                /> 
             </div>
             {currentWeek.days && (
                 <div style={{ marginTop: "2rem" }}>
