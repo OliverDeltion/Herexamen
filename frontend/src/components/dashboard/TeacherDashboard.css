@@ -8,6 +8,7 @@
 
 .teacherDashboard__start {
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+	padding-bottom: 0.5rem;
 }
 
 .teacherDashboard__groups {
@@ -21,6 +22,7 @@
 	gap: 1rem;
 	padding: 0.5rem;
 	justify-content: space-around;
+	flex-direction: column;
 }
 
 .teacherDashboard__groups > .teacherDashboard__group:not(:last-child) {
@@ -37,13 +39,37 @@
 	justify-content: center;
 	align-items: center;
 }
-@media screen and (max-width: 850px) {
+.teacherDashboard__start-header {
+	padding: 1rem;
+	h3 {
+		margin-bottom: 1rem;
+	}
+}
+
+@media screen and (min-width: 450px) {
+	.teacherDashboard__start-header {
+		display: flex;
+		justify-content: space-between;
+		h3 {
+			margin-bottom: 0rem;
+		}
+	}
+	.teacherDashboard__start {
+		padding-bottom: 0.3rem;
+	}
+}
+
+@media screen and (max-width: 900px) {
 	.teacherDashboard__diagram {
 		margin-top: 1.5rem;
 	}
 }
 
-@media screen and (min-width: 850px) {
+@media screen and (min-width: 900px) {
+	.teacherDashboard__group {
+		flex-direction: row;
+		gap: 0.5rem;
+	}
 	.teacherDashboard__group > *:not(:first-child) {
 		border-left: 1px solid #d3d3d3;
 		padding-left: 2.5rem;
@@ -71,6 +97,40 @@
 	}
 }
 
+/* KPI styling */
+
+.teacherDashboard__kpi {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1rem;
+	margin: 1rem;
+	background-color: var(--color-background);
+	border: 1px solid #ddd;
+	border-radius: 18px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+	li {
+		display: flex;
+		justify-content: start;
+		gap: 1rem;
+		align-items: center;
+		padding: 0.5rem 0;
+		border-bottom: 1px solid #ddd;
+		i {
+			display: none;
+		}
+	}
+}
+
+@media screen and (min-width: 900px) {
+	.teacherDashboard__kpi {
+		margin: 0;
+		li i {
+			display: block;
+		}
+	}
+}
+
 /* Filter styling */
 
 .teacherDashboard__bottom {
@@ -82,6 +142,9 @@
 	border: 1px solid #ddd;
 	border-radius: 18px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+	padding-inline: 1rem;
+	padding-bottom: 1rem;
+	margin: 1rem 0;
 }
 
 .teacherDashboard__filter-form {
@@ -108,6 +171,7 @@
 	border: 1px solid #ccc;
 	border-radius: 10px;
 	font-size: 1rem;
+	width: 100%;
 }
 
 .teacherDashboard__filter-button {
@@ -130,16 +194,20 @@
 	grid-column: auto;
 }
 
-@media screen and (min-width: 850px) {
+@media screen and (min-width: 900px) {
 	.teacherDashboard__bottom {
 		display: flex;
 	}
 	.teacherDashboard__filter {
 		width: 350px;
 		padding: 1rem;
+		margin: 0;
 	}
 	.teacherDashboard__filter-form {
 		grid-template-columns: 1fr;
+	}
+	.teacherDashboard__table {
+		margin-left: 2rem;
 	}
 }
 
@@ -154,12 +222,24 @@
 	border: 1px solid #ddd;
 	border-radius: 18px;
 	flex: 1;
-	margin-left: 2rem;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
 .teacherDashboard__table-element {
 	width: 100%;
+}
+@media screen and (min-width: 1350px) {
+	.teacherDashboard__table {
+		overflow-x: hidden;
+	}
+}
+
+/* groepen */
+h3 {
+	margin-left: 1rem;
+}
+.teacherDashboard__groups {
+	margin-inline: 1rem;
 }
 
 /* alle modifier kleuren voor de tabel */

@@ -6,9 +6,10 @@ import "../../Global.css";
 import "../common/Buttons.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-// categorie bepaling op basis van percentage
+
+// categorie zetten
 const getCategorie = (percentage) => {
-	if (percentage === 0) return "Geen aanwezigheid";
+	if (percentage === 0) return "Fail";
 	if (percentage >= 100) return "Perfect";
 	if (percentage >= 95) return "Excellent";
 	if (percentage >= 80) return "Goed";
@@ -17,7 +18,7 @@ const getCategorie = (percentage) => {
 	return "Fail";
 };
 
-// css klasse toevoegen op basis van percentage
+// utility classes
 const getPercentageClass = (percentage) => {
 	if (percentage === 0) return "percentage--afwezig";
 	if (percentage >= 100) return "percentage--perfect";
@@ -27,11 +28,11 @@ const getPercentageClass = (percentage) => {
 	if (percentage >= 50) return "percentage--onvoldoende";
 	return "percentage--fail";
 };
+
 const TeacherDashboard = () => {
-	// hier komt de studentenlijst in
+	// studentenlijst
 	const [data, setData] = useState([]);
 
-	// dit houdt gemiddelde percentage bij van alle studenten
 	const [averagePercentage, setAveragePercentage] = useState(0);
 
 	// usestates voor de filters
@@ -41,23 +42,20 @@ const TeacherDashboard = () => {
 	const [weekEnd, setWeekEnd] = useState("");
 	const [yearFilter, setYearFilter] = useState("");
 
+	//studenten ophalen API
 	useEffect(() => {
 		async function fetchData() {
 			try {
 				const response = await axios.get("http://localhost:3000/api/get/students");
-				// hier zetten we ze in de state
 				const students = response.data;
 				setData(students);
 				if (students.length > 0) {
-					// telt alle percentages op, als het niet bestaat dan pak je 0
+					// alle percentages optellen
 					const total = students.reduce((acc, student) => acc + (student.percentage || 0), 0);
-					// deelt totaal door aantal studenten => dus gemiddeld percentage
 					const avg = total / students.length;
-					// rond het af naar hele getallen en zet in state
 					setAveragePercentage(Math.round(avg));
 				}
 			} catch (error) {
-				// als het fout gaat, gewoon loggen in console
 				console.error("Fout bij het ophalen van studenten:", error);
 			}
 		}
@@ -68,85 +66,130 @@ const TeacherDashboard = () => {
 	const filteredData = data.filter((student) => {
 		const matchStudentnummer = !studentnummerFilter.trim() || student.studentnummer.toString().includes(studentnummerFilter.trim());
 
-		// percentage filter
-		const percentage = student.percentage ?? 0;
-		// categorie filter
-		const categorie = getCategorie(percentage);
-		const matchCategorie = !categorieFilter || categorie === categorieFilter;
+		const matchYear = !yearFilter || (student.jaar && student.jaar.toString() === yearFilter.toString());
 
-		// week filter
 		const studentWeek = student.week ?? null;
-
 		const weekStartNumber = parseInt(weekStart, 10);
 		const weekEndNumber = parseInt(weekEnd, 10);
-
 		const matchWeekStart = !weekStart || (studentWeek && studentWeek >= weekStartNumber);
 		const matchWeekEnd = !weekEnd || (studentWeek && studentWeek <= weekEndNumber);
 
-		// jaar filter
-		const matchYear = !yearFilter || (student.jaar && student.jaar.toString() === yearFilter.toString());
+		const percentage = student.percentage ?? 0;
+		const categorie = getCategorie(percentage);
+		const matchCategorie = !categorieFilter || categorie === categorieFilter;
 
-		// voeg meer filters hierna toe indien nodig
-		return matchStudentnummer && matchCategorie && matchWeekStart && matchWeekEnd && matchYear;
+		return matchStudentnummer && matchYear && matchWeekStart && matchWeekEnd && matchCategorie;
 	});
 
+	// percentage gefilterde studenten
 	const filteredAveragePercentage = filteredData.length
-		? Math.round(filteredData.reduce((acc, student) => acc + (student.percentage || 0), 0) / filteredData.length)
+		? // reduce is de optel functie
+		  //	acc is tussenstand van de som
+		  Math.round(filteredData.reduce((acc, student) => acc + (student.percentage || 0), 0) / filteredData.length)
 		: 0;
 
+	const [groepen, setGroepen] = useState({});
+
+	// studenten toevoegen aan groepen
+	const voegStudentToeAanGroep = (groepNaam, studentnummer) => {
+		setGroepen((prev) => {
+			//set voorkomt dubbele input
+			const huidigeGroep = new Set(prev[groepNaam] || []);
+			huidigeGroep.add(studentnummer);
+			return {
+				// vorige groepen behouden
+				...prev,
+				// nieuwe groep toevoegen of overschrijven
+				[groepNaam]: Array.from(huidigeGroep),
+			};
+		});
+	};
+
 	return (
-		<div class="bg-color">
-			<div class="container">
-				<div class="teacherDashboard">
-					<div class="teacherDashboard__container">
-						<div class="teacherDashboard__top">
-							<div class="teacherDashboard__start">
-								<div class="teacherDashboard__start-header">
-									<h3>Programmeerschool Docent Dashboard</h3>
-									{/* <button>test</button> */}
+		<div className="bg-color">
+			<div className="container">
+				<div className="teacherDashboard">
+					<div className="teacherDashboard__container">
+						<div className="teacherDashboard__top">
+							<div className="teacherDashboard__start">
+								<div className="teacherDashboard__start-header">
+									<h3>Docent Dashboard</h3>
+									<div className="navbar__end">
+										<a className="navbar__button" href="/import">
+											Importeer Spreadsheet
+										</a>
+									</div>
 								</div>
-								<div className="teacherDashboard__groups">
-									{/* voorbeeld van groepen, deze zou normaal uit de database komen
-									{[1, 2, 3, 4].map((group) => (
-										<div className="teacherDashboard__group" key={group}>
-											<div className="teacherDashboard__group-name">Groep {group}</div>
-											<div className="teacherDashboard__group-students">Aantal studenten: 5</div>
-											<a className="teacherDashboard__group-edit">Bekijk Groep</a>
-											<a className="teacherDashboard__group-delete">Verwijder Groep</a>
-										</div>
-									))} */}
+								<div className="teacherDashboard__kpi">
+									<h4>
+										<i className="fas fa-chart-bar"></i> Overzicht
+									</h4>
+									<ul>
+										<li>
+											<i className="fas fa-user-graduate"></i> Unieke studenten:{" "}
+											<strong>{new Set(filteredData.map((s) => s.studentnummer)).size}</strong>
+										</li>
+										<li>
+											<i className="fas fa-calendar-week"></i> Aantal weken:{" "}
+											<strong>{new Set(filteredData.map((s) => s.week)).size}</strong>
+										</li>
+										<li>
+											<i className="fas fa-percent"></i> Gem. aanwezigheid: <strong>{filteredAveragePercentage}%</strong>
+										</li>
+										<li>
+											<i className="fas fa-exclamation-triangle"></i> Fails:{" "}
+											<strong>{filteredData.filter((s) => getCategorie(s.percentage ?? 0) === "Fail").length}</strong>
+										</li>
+										<li>
+											<i className="fas fa-chart-line"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
+										</li>
+										<li>
+											<i className="fas fa-file-alt"></i> Bestand: <strong>{averagePercentage}%</strong>
+										</li>
+									</ul>
 								</div>
-								{/* <button class="teacherDashboard__button">Maak nieuwe groep aan</button> */}
 							</div>
-							<div class="teacherDashboard__end">
-								<div class="teacherDashboard__diagram">
-									<div style={{ width: 250, height: 250 }}>
+							<div className="teacherDashboard__end">
+								<div className="teacherDashboard__diagram">
+									<div style={{ width: "100%", maxWidth: 250, height: "auto" }}>
 										<CircularProgressbar
-											//percentage van de functie hier boven
 											value={filteredAveragePercentage}
-											text={`Algemeen\n${filteredAveragePercentage}%`}
+											text={
+												<>
+													<tspan x="50%" dy="0em">
+														Aanwezigheid
+													</tspan>
+													<tspan x="50%" dy="1.2em">
+														{filteredAveragePercentage}%
+													</tspan>
+												</>
+											}
 											styles={{
 												text: {
-													lineHeight: 1,
-													fontSize: "16px",
+													fontSize: "10px",
+													lineHeight: "1.3",
 													whiteSpace: "pre-line",
+													dominantBaseline: "middle",
+													textAnchor: "middle",
 												},
+												path: { stroke: "#3498db" },
+												trail: { stroke: "#ccc" },
 											}}
 										/>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="teacherDashboard__bottom">
-							<div class="teacherDashboard__filter">
+						<div className="teacherDashboard__bottom">
+							<div className="teacherDashboard__filter">
 								<form
-									class="teacherDashboard__filter-form"
+									className="teacherDashboard__filter-form"
 									onSubmit={(e) => {
 										e.preventDefault();
 									}}
 								>
-									<div class="teacherDashboard__filter-group">
-										<label for="periode">Studentnummer</label>
+									<div className="teacherDashboard__filter-group">
+										<label htmlFor="periode">Studentnummer</label>
 										<input
 											type="text"
 											id="studentnummer"
@@ -155,8 +198,8 @@ const TeacherDashboard = () => {
 											onChange={(e) => setStudentnummerFilter(e.target.value)}
 										/>
 									</div>
-									<div class="teacherDashboard__filter-group">
-										<label for="weekStart">Week van</label>
+									<div className="teacherDashboard__filter-group">
+										<label htmlFor="weekStart">Week van</label>
 										<input
 											type="number"
 											id="weekStart"
@@ -167,8 +210,8 @@ const TeacherDashboard = () => {
 											onChange={(e) => setWeekStart(e.target.value)}
 										/>
 									</div>
-									<div class="teacherDashboard__filter-group">
-										<label for="weekEnd">Week tot</label>
+									<div className="teacherDashboard__filter-group">
+										<label htmlFor="weekEnd">Week tot</label>
 										<input
 											type="number"
 											id="weekEnd"
@@ -179,8 +222,8 @@ const TeacherDashboard = () => {
 											onChange={(e) => setWeekEnd(e.target.value)}
 										/>
 									</div>
-									<div class="teacherDashboard__filter-group">
-										<label for="categorie">Categorie</label>
+									<div className="teacherDashboard__filter-group">
+										<label htmlFor="categorie">Categorie</label>
 										<select id="categorie" name="categorie" value={categorieFilter} onChange={(e) => setCategorieFilter(e.target.value)}>
 											<option value="">Alle Categorieën</option>
 											<option value="Geen aanwezigheid">Geen aanwezigheid</option>
@@ -192,14 +235,9 @@ const TeacherDashboard = () => {
 											<option value="Fail">Fail</option>
 										</select>
 									</div>
-									<div class="teacherDashboard__filter-group">
-										<label for="datum">Jaar</label>
-										<input type="year" id="jaar" name="jaar" value={yearFilter} onChange={(e) => setYearFilter(e.target.value)} />
-									</div>
-									<div class="teacherDashboard__filter-group teacherDashboard__filter-group--full">
-										<button type="submit" class="teacherDashboard__filter-button">
-											Toepassen
-										</button>
+									<div className="teacherDashboard__filter-group">
+										<label htmlFor="datum">Jaar</label>
+										<input type="number" id="jaar" name="jaar" value={yearFilter} onChange={(e) => setYearFilter(e.target.value)} />
 									</div>
 								</form>
 							</div>
@@ -215,6 +253,7 @@ const TeacherDashboard = () => {
 											<th>Percentage</th>
 											<th>Categorie</th>
 											<th>Gestopt?</th>
+											<th>Groep</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -240,12 +279,51 @@ const TeacherDashboard = () => {
 															defaultChecked={student.gestopt ?? false}
 														/>
 													</td>
+													<td>
+														<select
+															onChange={(e) => {
+																if (e.target.value) {
+																	voegStudentToeAanGroep(e.target.value, student.studentnummer);
+																	e.target.value = "";
+																}
+															}}
+														>
+															<option value="">Kies groep</option>
+															<option value="Groep A">Groep A</option>
+															<option value="Groep B">Groep B</option>
+															<option value="Groep C">Groep C</option>
+														</select>
+													</td>
 												</tr>
 											);
 										})}
 									</tbody>
 								</table>
 							</div>
+						</div>
+						<h3>Groepenoverzicht</h3>
+						<p>
+							<em>Let op: groepen zijn tijdelijk en gaan verloren bij herladen.</em>
+						</p>
+						<div className="teacherDashboard__groups">
+							{Object.entries(groepen).map(([groepNaam, studentnummers]) => {
+								const pogingen = data.filter((s) => studentnummers.includes(s.studentnummer));
+								if (pogingen.length === 0) return null;
+
+								const gemiddelde = Math.round(pogingen.reduce((acc, s) => acc + (s.percentage || 0), 0) / pogingen.length);
+
+								const uniekeStudenten = [...new Set(pogingen.map((s) => s.studentnummer))];
+
+								return (
+									<div key={groepNaam} className="teacherDashboard__group">
+										<h4>{groepNaam}</h4>
+										<p>Aantal unieke studenten: {uniekeStudenten.length}</p>
+										<p>
+											Gemiddelde aanwezigheid: <strong>{gemiddelde}%</strong>
+										</p>
+									</div>
+								);
+							})}
 						</div>
 					</div>
 				</div>
