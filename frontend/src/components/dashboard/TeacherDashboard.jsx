@@ -144,7 +144,8 @@ const TeacherDashboard = () => {
 											<i className="fas fa-chart-line"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
 										</li>
 										<li>
-											<i className="fas fa-file-alt"></i> Bestand: <strong>{averagePercentage}%</strong>
+											<i className="fas fa-file-alt"></i>
+											<button>Exporteer PDF</button>
 										</li>
 									</ul>
 								</div>
@@ -306,7 +307,9 @@ const TeacherDashboard = () => {
 							<em>Let op: groepen zijn tijdelijk en gaan verloren bij herladen.</em>
 						</p>
 						<div className="teacherDashboard__groups">
+							{/* groep object wordt aangemaakt, en gevuld met 2 waardes: groepnaam en studentnummers */}
 							{Object.entries(groepen).map(([groepNaam, studentnummers]) => {
+								//
 								const pogingen = data.filter((s) => studentnummers.includes(s.studentnummer));
 								if (pogingen.length === 0) return null;
 
