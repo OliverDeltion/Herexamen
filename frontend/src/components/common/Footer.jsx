@@ -19,10 +19,10 @@ const Footer = () => {
 			</div>
 
 			<div className="footer__section">
-				<a href="#">Privacybeleid</a>
-				<a href="#">Gebruiksvoorwaarden</a>
-				<a href="#">Cookies</a>
-			</div>
+                <a href="/Privacybeleid.pdf" target="_blank" rel="noopener noreferrer">Privacybeleid</a>
+                <a href="/Gebruiksvoorwaarden.pdf" target="_blank" rel="noopener noreferrer">Gebruiksvoorwaarden</a>
+                <a href="#">Cookies</a>
+            </div>
 		</footer>
 	);
 };
