@@ -46,7 +46,7 @@
 	}
 }
 
-@media screen and (min-width: 450px) {
+@media screen and (min-width: 500px) {
 	.teacherDashboard__start-header {
 		display: flex;
 		justify-content: space-between;
@@ -291,7 +291,7 @@ h3 {
 .percentage--kritiek {
 	color: #d32f2f;
 }
-.percentage--afwezig {
+.percentage--fail {
 	color: #000;
 	background-color: #fdd;
 }

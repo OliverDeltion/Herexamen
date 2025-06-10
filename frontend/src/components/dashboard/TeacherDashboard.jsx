@@ -13,7 +13,7 @@ const categoryThresholds = [
 	{ min: 80, label: "Goed" },
 	{ min: 65, label: "Voldoende" },
 	{ min: 50, label: "Onvoldoende" },
-	{ min: 1, label: "Fail" },
+	{ min: 1, label: "Kritiek" },
 	{ min: 0, label: "Fail" },
 ];
 
@@ -28,8 +28,8 @@ const percentageClassThresholds = [
 	{ min: 80, className: "percentage--goed" },
 	{ min: 65, className: "percentage--voldoende" },
 	{ min: 50, className: "percentage--onvoldoende" },
-	{ min: 1, className: "percentage--fail" },
-	{ min: 0, className: "percentage--afwezig" },
+	{ min: 1, className: "percentage--kritiek" },
+	{ min: 0, className: "percentage--fail" },
 ];
 
 const getPercentageClass = (percentage) => {
@@ -331,7 +331,7 @@ const TeacherDashboard = () => {
 											<th>Groep</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody className="teacherDashboard__table-body">
 										{filteredData.map((student, index) => {
 											const percentage = student.percentage ?? 0;
 											const categorie = getCategorie(percentage);
