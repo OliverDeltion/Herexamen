@@ -173,25 +173,47 @@
 	font-size: 1rem;
 	width: 100%;
 }
+.teacherDashboard__week-navigator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+	button {
+		padding: 0.3rem 0.75rem;
+		border: none;
+		background-color: var(--color-primary);
+		color: #fff;
+		font-size: 1.2rem;
+		border-radius: 10px;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
 
-.teacherDashboard__filter-button {
-	padding: 0.75rem;
-	background-color: var(--color-primary);
-	color: white;
-	border: none;
-	border-radius: 10px;
-	cursor: pointer;
-	font-weight: bold;
-	width: 100%;
-	transition: background-color 0.2s ease;
-}
+	button:hover {
+		background-color: var(--color-accent);
+	}
 
-.teacherDashboard__filter-button:hover {
-	background-color: var(--color-accent);
+	input {
+		width: 100%;
+		text-align: center;
+		padding: 0.5rem;
+		border-radius: 10px;
+		border: 1px solid #ccc;
+		font-size: 1rem;
+	}
 }
 
 .teacherDashboard__filter-group--full {
 	grid-column: auto;
+}
+
+.teacherDashboard__filter-actions {
+	button {
+		width: 100%;
+		border-radius: 10px;
+		padding: 0.5rem;
+	}
 }
 
 @media screen and (min-width: 900px) {
@@ -209,6 +231,9 @@
 	.teacherDashboard__table {
 		margin-left: 2rem;
 	}
+	.teacherDashboard__week-navigator {
+		justify-content: start;
+	}
 }
 
 /* Spreadsheet */
@@ -216,7 +241,7 @@
 .teacherDashboard__table {
 	overflow-x: scroll;
 	overflow-y: scroll;
-	max-height: 30rem;
+	max-height: 35rem;
 	padding: 1rem;
 	background-color: var(--color-background);
 	border: 1px solid #ddd;
