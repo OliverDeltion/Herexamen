@@ -26,7 +26,8 @@ async function handleUpload(req, res) {
 
     let inserts = 0;
     let updates = 0;
-
+    const originalName = file.originalname;
+    console.log(originalName);
     for (const row of rows) {
       const { studentnummer, aanwezigheid, rooster, week, jaar } = row;
 
@@ -35,8 +36,8 @@ async function handleUpload(req, res) {
       console.log(results);
       if (!results) {
         await pool.query(
-          'INSERT INTO attendance (studentnummer, aanwezigheid, roosterminuten, week, jaar) VALUES (?, ?, ?, ?, ?)',
-          [studentnummer, aanwezigheid, rooster, week, jaar]
+          'INSERT INTO attendance (studentnummer, aanwezigheid, roosterminuten, week, jaar, upload_bestand) VALUES (?, ?, ?, ?, ?, ?)',
+          [studentnummer, aanwezigheid, rooster, week, jaar, originalName]
         );
       }
       else {
@@ -82,6 +83,8 @@ async function getStudentStats(req, res) {
   try {
     const [rows] = await pool.query(
       `SELECT
+          week,
+          jaar,
          studentnummer,
          SUM(aanwezigheid) AS totaal_aanwezig,
          SUM(roosterminuten) AS totaal_rooster
@@ -90,24 +93,61 @@ async function getStudentStats(req, res) {
        GROUP BY studentnummer`,
       [studentnummer]
     );
+    const weken = await pool.query(`
+SELECT 
+week,
+SUM(roosterminuten) AS total_minutes,
+SUM(aanwezigheid) AS aanwezigheid
+FROM attendance 
+WHERE studentnummer =?
+GROUP BY week
+
+`, [studentnummer]); 
+console.log('weken', weken);
 
     //  Check eerst of er een resultaat is
     if (!rows || rows.length === 0) {
       return res.status(404).json({ error: "Student niet gevonden." });
     }
     //  Pas daarna destructure je het resultaat
-    const { totaal_aanwezig, totaal_rooster } = rows;
+    const { week, jaar, totaal_aanwezig, totaal_rooster } = rows;
 
     const percentage = Math.round((totaal_aanwezig / totaal_rooster) * 1000) / 10;
     const categorie = bepaalCategorie(percentage);
 
-    res.json({ studentnummer, percentage, categorie });
+    res.json({ week, jaar, studentnummer, percentage, categorie, totaal_aanwezig, totaal_rooster,weken  });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Interne fout bij ophalen student stats" });
   }
 }
 
+// async function updateAndPublishAttendance(req, res) {
+//   const { studentnummer, week, jaar, aanwezigheid, rooster } = req.body;
+
+//   if (!studentnummer || !week || !jaar || aanwezigheid == null || rooster == null) {
+//     return res.status(400).json({ error: "Ontbrekende gegevens" });
+//   }
+
+//   try {
+//     const [result] = await pool.query(`
+//       UPDATE attendance
+//       SET aanwezigheid = ?, 
+//           roosterminuten = ?, 
+//           published_at = NOW()
+//       WHERE studentnummer = ? AND week = ? AND jaar = ?
+//     `, [aanwezigheid, rooster, studentnummer, week, jaar]);
+
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ error: "Geen bijbehorend record gevonden" });
+//     }
+
+//     res.json({ message: "Geüpdatet én gepubliceerd", studentnummer, week, jaar });
+//   } catch (err) {
+//     console.error("Fout bij update/publish:", err);
+//     res.status(500).json({ error: "Interne fout bij update/publish" });
+//   }
+// }
 
 async function getAllStudentPercentages(req, res) {
   try {
@@ -116,6 +156,7 @@ async function getAllStudentPercentages(req, res) {
     studentnummer,
     week,
     jaar,
+    upload_bestand,
     SUM(aanwezigheid) AS totaal_aanwezigheid,
     SUM(roosterminuten) AS totaal_roosterminuten
   FROM 
@@ -135,6 +176,7 @@ async function getAllStudentPercentages(req, res) {
       data.push({
         week: row.week,
         jaar: row.jaar,
+        upload_bestand: row.upload_bestand,
         studentnummer: row.studentnummer,
         percentage,
         aanwezigheid: aanwezig,
