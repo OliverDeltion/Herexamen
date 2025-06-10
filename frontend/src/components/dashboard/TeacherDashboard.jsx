@@ -83,7 +83,9 @@ const TeacherDashboard = () => {
 
 	// percentage gefilterde studenten
 	const filteredAveragePercentage = filteredData.length
-		? Math.round(filteredData.reduce((acc, student) => acc + (student.percentage || 0), 0) / filteredData.length)
+		? // reduce is de optel functie
+		  //	acc is tussenstand van de som
+		  Math.round(filteredData.reduce((acc, student) => acc + (student.percentage || 0), 0) / filteredData.length)
 		: 0;
 
 	const [groepen, setGroepen] = useState({});
@@ -91,10 +93,13 @@ const TeacherDashboard = () => {
 	// studenten toevoegen aan groepen
 	const voegStudentToeAanGroep = (groepNaam, studentnummer) => {
 		setGroepen((prev) => {
+			//set voorkomt dubbele input
 			const huidigeGroep = new Set(prev[groepNaam] || []);
 			huidigeGroep.add(studentnummer);
 			return {
+				// vorige groepen behouden
 				...prev,
+				// nieuwe groep toevoegen of overschrijven
 				[groepNaam]: Array.from(huidigeGroep),
 			};
 		});
