@@ -32,23 +32,38 @@ async function handleUpload(req, res) {
       const { studentnummer, aanwezigheid, rooster, week, jaar } = row;
 
       if (!studentnummer || aanwezigheid == null || !rooster || !week || !jaar) continue;
-      let [results] = await pool.query('SELECT * FROM attendance WHERE week = ? AND jaar = ? AND studentnummer = ?', [week, jaar, studentnummer]);
-      console.log(results);
-      if (!results) {
+      // haal bestaande record op
+      const [results] = await pool.query(
+        'SELECT 1 FROM attendance WHERE week = ? AND jaar = ? AND studentnummer = ?',
+        [week, jaar, studentnummer]
+      );
+
+      if (results.length === 0) {
+        // geen record → insert (inclusief upload_bestand)
         await pool.query(
-          'INSERT INTO attendance (studentnummer, aanwezigheid, roosterminuten, week, jaar, upload_bestand) VALUES (?, ?, ?, ?, ?, ?)',
+          `INSERT INTO attendance 
+       (studentnummer, aanwezigheid, roosterminuten, week, jaar, upload_bestand, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`,
           [studentnummer, aanwezigheid, rooster, week, jaar, originalName]
         );
-      }
-      else {
+        inserts++;
+      } else {
+        // record bestaat → update inclusief upload_bestand
         await pool.query(
           `UPDATE attendance
-           SET aanwezigheid = ?, roosterminuten = ?
-            WHERE studentnummer = ? AND week = ? AND jaar = ?`,
-          [aanwezigheid, rooster, studentnummer, week, jaar]
+       SET aanwezigheid      = ?,
+           roosterminuten    = ?,
+           upload_bestand    = ?,    -- wéér updaten
+           updated_at        = NOW()
+     WHERE studentnummer = ? 
+       AND week          = ? 
+       AND jaar          = ?`,
+          [aanwezigheid, rooster, originalName, studentnummer, week, jaar]
         );
-
+        updates++;
       }
+
+
     }
 
 
@@ -102,8 +117,8 @@ FROM attendance
 WHERE studentnummer =?
 GROUP BY week
 
-`, [studentnummer]); 
-console.log('weken', weken);
+`, [studentnummer]);
+    console.log('weken', weken);
 
     //  Check eerst of er een resultaat is
     if (!rows || rows.length === 0) {
@@ -115,7 +130,7 @@ console.log('weken', weken);
     const percentage = Math.round((totaal_aanwezig / totaal_rooster) * 1000) / 10;
     const categorie = bepaalCategorie(percentage);
 
-    res.json({ week, jaar, studentnummer, percentage, categorie, totaal_aanwezig, totaal_rooster,weken  });
+    res.json({ week, jaar, studentnummer, percentage, categorie, totaal_aanwezig, totaal_rooster, weken });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Interne fout bij ophalen student stats" });
