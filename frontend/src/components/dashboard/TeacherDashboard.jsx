@@ -83,7 +83,9 @@ const TeacherDashboard = () => {
 
 	// percentage gefilterde studenten
 	const filteredAveragePercentage = filteredData.length
-		? Math.round(filteredData.reduce((acc, student) => acc + (student.percentage || 0), 0) / filteredData.length)
+		? // reduce is de optel functie
+		  //	acc is tussenstand van de som
+		  Math.round(filteredData.reduce((acc, student) => acc + (student.percentage || 0), 0) / filteredData.length)
 		: 0;
 
 	const [groepen, setGroepen] = useState({});
@@ -91,10 +93,13 @@ const TeacherDashboard = () => {
 	// studenten toevoegen aan groepen
 	const voegStudentToeAanGroep = (groepNaam, studentnummer) => {
 		setGroepen((prev) => {
+			//set voorkomt dubbele input
 			const huidigeGroep = new Set(prev[groepNaam] || []);
 			huidigeGroep.add(studentnummer);
 			return {
+				// vorige groepen behouden
 				...prev,
+				// nieuwe groep toevoegen of overschrijven
 				[groepNaam]: Array.from(huidigeGroep),
 			};
 		});
@@ -136,10 +141,10 @@ const TeacherDashboard = () => {
 											<strong>{filteredData.filter((s) => getCategorie(s.percentage ?? 0) === "Fail").length}</strong>
 										</li>
 										<li>
-											<i className="fas fa-percentage"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
+											<i className="fas fa-chart-line"></i> Gem. aanwezigheid totaal: <strong>{averagePercentage}%</strong>
 										</li>
 										<li>
-											<i className="fas fa-percentage"></i> Bestand: <strong>{averagePercentage}%</strong>
+											<i className="fas fa-file-alt"></i> Bestand: <strong>{averagePercentage}%</strong>
 										</li>
 									</ul>
 								</div>
@@ -149,7 +154,16 @@ const TeacherDashboard = () => {
 									<div style={{ width: "100%", maxWidth: 250, height: "auto" }}>
 										<CircularProgressbar
 											value={filteredAveragePercentage}
-											text={`Aanwezigheid\n${filteredAveragePercentage}%`}
+											text={
+												<>
+													<tspan x="50%" dy="0em">
+														Aanwezigheid
+													</tspan>
+													<tspan x="50%" dy="1.2em">
+														{filteredAveragePercentage}%
+													</tspan>
+												</>
+											}
 											styles={{
 												text: {
 													fontSize: "10px",
