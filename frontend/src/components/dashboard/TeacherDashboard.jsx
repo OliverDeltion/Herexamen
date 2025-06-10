@@ -1,10 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./TeacherDashboard.css";
 import "../../Global.css";
 import "../common/Buttons.css";
 import { CircularProgressbar } from "react-circular-progressbar";
+import ExportTeacherButton from "./ExportTeacherButton";
 import "react-circular-progressbar/dist/styles.css";
 
 // categorie zetten
@@ -41,6 +42,10 @@ const TeacherDashboard = () => {
 	const [weekStart, setWeekStart] = useState("");
 	const [weekEnd, setWeekEnd] = useState("");
 	const [yearFilter, setYearFilter] = useState("");
+
+	// useRef gebruiken voor de PDF export - Nirmin
+	const infoRef = useRef(null);
+	const tableRef = useRef(null);
 
 	//studenten ophalen API
 	useEffect(() => {
@@ -111,7 +116,7 @@ const TeacherDashboard = () => {
 				<div className="teacherDashboard">
 					<div className="teacherDashboard__container">
 						<div className="teacherDashboard__top">
-							<div className="teacherDashboard__start">
+							<div className="teacherDashboard__start" ref={infoRef}>
 								<div className="teacherDashboard__start-header">
 									<h3>Docent Dashboard</h3>
 									<div className="navbar__end">
@@ -145,7 +150,12 @@ const TeacherDashboard = () => {
 										</li>
 										<li>
 											<i className="fas fa-file-alt"></i>
-											<button>Exporteer PDF</button>
+
+											{/* Export pdf - Nirmin */}
+											<ExportTeacherButton
+												infoRef={infoRef}
+												tableRef={tableRef}
+											/> 
 										</li>
 									</ul>
 								</div>
@@ -242,7 +252,7 @@ const TeacherDashboard = () => {
 									</div>
 								</form>
 							</div>
-							<div className="teacherDashboard__table">
+							<div className="teacherDashboard__table"  ref={tableRef}>
 								<table className="teacherDashboard__table-element">
 									<thead>
 										<tr>
