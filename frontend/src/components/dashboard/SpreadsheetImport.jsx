@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // <-- toevoegen
 
 
 const SpreadsheetImport = () => {
     const [fileName, setFileName] = useState("");
     const [data, setData] = useState([]);
+    const navigate = useNavigate(); // <-- toevoegen
 
 
     const handleFileChange = (e) => {
@@ -37,6 +39,12 @@ const SpreadsheetImport = () => {
 
     return (
         <div style={{ padding: "2rem", textAlign: "center" }}>
+            <button
+                style={{ position: "absolute", left: 20, top: 20 }}
+                onClick={() => navigate("/")}
+            >
+                Terug naar dashboard
+            </button>
             <h2>Spreadsheet importeren</h2>
             <input
                 type="file"
