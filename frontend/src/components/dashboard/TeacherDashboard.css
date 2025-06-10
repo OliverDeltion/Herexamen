@@ -22,6 +22,7 @@
 	gap: 1rem;
 	padding: 0.5rem;
 	justify-content: space-around;
+	flex-direction: column;
 }
 
 .teacherDashboard__groups > .teacherDashboard__group:not(:last-child) {
@@ -57,6 +58,7 @@
 		padding-bottom: 0.3rem;
 	}
 }
+
 @media screen and (max-width: 900px) {
 	.teacherDashboard__diagram {
 		margin-top: 1.5rem;
@@ -64,6 +66,10 @@
 }
 
 @media screen and (min-width: 900px) {
+	.teacherDashboard__group {
+		flex-direction: row;
+		gap: 0.5rem;
+	}
 	.teacherDashboard__group > *:not(:first-child) {
 		border-left: 1px solid #d3d3d3;
 		padding-left: 2.5rem;
@@ -110,12 +116,18 @@
 		align-items: center;
 		padding: 0.5rem 0;
 		border-bottom: 1px solid #ddd;
+		i {
+			display: none;
+		}
 	}
 }
 
 @media screen and (min-width: 900px) {
 	.teacherDashboard__kpi {
 		margin: 0;
+		li i {
+			display: block;
+		}
 	}
 }
 
@@ -159,6 +171,7 @@
 	border: 1px solid #ccc;
 	border-radius: 10px;
 	font-size: 1rem;
+	width: 100%;
 }
 
 .teacherDashboard__filter-button {
@@ -214,6 +227,19 @@
 
 .teacherDashboard__table-element {
 	width: 100%;
+}
+@media screen and (min-width: 1350px) {
+	.teacherDashboard__table {
+		overflow-x: hidden;
+	}
+}
+
+/* groepen */
+h3 {
+	margin-left: 1rem;
+}
+.teacherDashboard__groups {
+	margin-inline: 1rem;
 }
 
 /* alle modifier kleuren voor de tabel */
