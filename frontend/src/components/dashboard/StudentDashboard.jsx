@@ -360,8 +360,5 @@ const StudentDashboard = ({ studentData }) => {
     );
 };
 
-   return(
-    <div> {JSON.stringify(data)}
-    </div>
-   );}
+
 export default StudentDashboard;
