@@ -3,21 +3,34 @@ import Footer from "../components/common/Footer";
 import StudentDashboard from "../components/dashboard/StudentDashboard";
 import TeacherDashboard from "../components/dashboard/TeacherDashboard";
 import Modal from "../components/common/Modal";
+import LoginModal from "../components/student/LoginModal";
 
 //Styles
 import "../styles/global.css";
 import "../App.css";
 
 const DashboardPage = () => {
-    const [selectedRole, setSelectedRole] = useState(null);
-    console.log("Selected Role:", selectedRole);
 
-    const handleSelectedRole = (role) => {
-        setSelectedRole(role);
+	const [selectedRole, setSelectedRole] = useState(null);
+	const [studentData, setStudentData] = useState(null);
+	const [showLogin, setShowLogin] = useState(false);
+	const [isLoginOpen, setIsLoginOpen] = useState(true);
+
+	    const handleSelectedRole = (role) => {
+			setSelectedRole(role);
+			if (role === "student") {
+				setShowLogin(true); // Laat Login Modal zien - Nirmin
+			}
     };
 
+	const handleLogin = (data) => {
+		setStudentData(data);
+		setShowLogin(false); // Verberg Login Modal na succesvolle login - Nirmin
+	};
+
     const handleBack = () => {
-        setSelectedRole(null);
+		setSelectedRole(null);
+		setStudentData(null);
     };
 
 	return (
@@ -41,23 +54,34 @@ const DashboardPage = () => {
 						</div>
 					</>
 				)}
-				<Modal isOpen={!!selectedRole} onClose={handleBack}>
-					<div className="dashboard-modal-content">
-				{selectedRole === "student" && (
-							<>
-						<button onClick={handleBack} className="student-terug">
-							Terug
-						</button>
-						<StudentDashboard />
-							</>
-				)}
 
+				{/* Login Modal voor student */}
+				<LoginModal
+    isOpen={showLogin}
+    onClose={() => {
+        setShowLogin(false);
+        setSelectedRole(null); // Ga terug naar het beginscherm
+    }}
+    onLogin={handleLogin}
+				/>
+				{/* Modal voor gekozen rol */}
+				<Modal isOpen={selectedRole === "docent" || studentData} onClose={handleBack}>
+					<div className="dashboard-modal-content">
 				{selectedRole === "docent" && (
 							<>
 						<button onClick={handleBack} className="docent-terug">
 							Terug
 						</button>
 						<TeacherDashboard />
+							</>
+				)}
+
+				{selectedRole === "student" && studentData && (
+							<>
+						<button onClick={handleBack} className="docent-terug">
+							Terug
+						</button>
+						<StudentDashboard studentData={studentData} />
 							</>
 						)}
 					</div>

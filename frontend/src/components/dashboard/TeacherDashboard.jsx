@@ -1,32 +1,41 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./TeacherDashboard.css";
 import "../../Global.css";
 import "../common/Buttons.css";
 import { CircularProgressbar } from "react-circular-progressbar";
+import ExportTeacherButton from "./ExportTeacherButton";
 import "react-circular-progressbar/dist/styles.css";
 
-// categorie zetten
+const categoryThresholds = [
+	{ min: 100, label: "Perfect" },
+	{ min: 95, label: "Excellent" },
+	{ min: 80, label: "Goed" },
+	{ min: 65, label: "Voldoende" },
+	{ min: 50, label: "Onvoldoende" },
+	{ min: 1, label: "Kritiek" },
+	{ min: 0, label: "Fail" },
+];
+
 const getCategorie = (percentage) => {
-	if (percentage === 0) return "Fail";
-	if (percentage >= 100) return "Perfect";
-	if (percentage >= 95) return "Excellent";
-	if (percentage >= 80) return "Goed";
-	if (percentage >= 65) return "Voldoende";
-	if (percentage >= 50) return "Onvoldoende";
-	return "Fail";
+	const match = categoryThresholds.find((grens) => percentage >= grens.min);
+	return match ? match.label : "Fail";
 };
 
-// utility classes
+const percentageClassThresholds = [
+	{ min: 100, className: "percentage--perfect" },
+	{ min: 95, className: "percentage--excellent" },
+	{ min: 80, className: "percentage--goed" },
+	{ min: 65, className: "percentage--voldoende" },
+	{ min: 50, className: "percentage--onvoldoende" },
+	{ min: 1, className: "percentage--kritiek" },
+	{ min: 0, className: "percentage--fail" },
+];
+
 const getPercentageClass = (percentage) => {
-	if (percentage === 0) return "percentage--afwezig";
-	if (percentage >= 100) return "percentage--perfect";
-	if (percentage >= 95) return "percentage--excellent";
-	if (percentage >= 80) return "percentage--goed";
-	if (percentage >= 65) return "percentage--voldoende";
-	if (percentage >= 50) return "percentage--onvoldoende";
-	return "percentage--fail";
+	const match = percentageClassThresholds.find((grens) => percentage >= grens.min);
+	return match ? match.className : "percentage--fail";
 };
 
 const TeacherDashboard = () => {
@@ -41,6 +50,20 @@ const TeacherDashboard = () => {
 	const [weekStart, setWeekStart] = useState("");
 	const [weekEnd, setWeekEnd] = useState("");
 	const [yearFilter, setYearFilter] = useState("");
+	const [singleWeek, setSingleWeek] = useState("");
+
+	const resetFilters = () => {
+		setStudentnummerFilter("");
+		setCategorieFilter("");
+		setWeekStart("");
+		setWeekEnd("");
+		setYearFilter("");
+		setSingleWeek("");
+	};
+
+	// useRef gebruiken voor de PDF export - Nirmin
+	const infoRef = useRef(null);
+	const tableRef = useRef(null);
 
 	//studenten ophalen API
 	useEffect(() => {
@@ -69,10 +92,20 @@ const TeacherDashboard = () => {
 		const matchYear = !yearFilter || (student.jaar && student.jaar.toString() === yearFilter.toString());
 
 		const studentWeek = student.week ?? null;
-		const weekStartNumber = parseInt(weekStart, 10);
-		const weekEndNumber = parseInt(weekEnd, 10);
-		const matchWeekStart = !weekStart || (studentWeek && studentWeek >= weekStartNumber);
-		const matchWeekEnd = !weekEnd || (studentWeek && studentWeek <= weekEndNumber);
+
+		let matchWeekStart = true;
+		let matchWeekEnd = true;
+
+		if (singleWeek) {
+			const single = parseInt(singleWeek, 10);
+			matchWeekStart = studentWeek === single;
+			matchWeekEnd = true; // wordt genegeerd
+		} else {
+			const weekStartNumber = parseInt(weekStart, 10);
+			const weekEndNumber = parseInt(weekEnd, 10);
+			matchWeekStart = !weekStart || (studentWeek && studentWeek >= weekStartNumber);
+			matchWeekEnd = !weekEnd || (studentWeek && studentWeek <= weekEndNumber);
+		}
 
 		const percentage = student.percentage ?? 0;
 		const categorie = getCategorie(percentage);
@@ -111,7 +144,7 @@ const TeacherDashboard = () => {
 				<div className="teacherDashboard">
 					<div className="teacherDashboard__container">
 						<div className="teacherDashboard__top">
-							<div className="teacherDashboard__start">
+							<div className="teacherDashboard__start" ref={infoRef}>
 								<div className="teacherDashboard__start-header">
 									<h3>Docent Dashboard</h3>
 									<div className="navbar__end">
@@ -145,7 +178,12 @@ const TeacherDashboard = () => {
 										</li>
 										<li>
 											<i className="fas fa-file-alt"></i>
-											<button>Exporteer PDF</button>
+
+											{/* Export pdf - Nirmin */}
+											<ExportTeacherButton
+												infoRef={infoRef}
+												tableRef={tableRef}
+											/> 
 										</li>
 									</ul>
 								</div>
@@ -200,6 +238,47 @@ const TeacherDashboard = () => {
 										/>
 									</div>
 									<div className="teacherDashboard__filter-group">
+										<label htmlFor="singleWeek">Week</label>
+										<div className="teacherDashboard__week-navigator">
+											<button
+												type="button"
+												onClick={() => {
+													const currentWeek = parseInt(singleWeek || "0", 10);
+													if (currentWeek > 1) {
+														setSingleWeek(currentWeek - 1);
+													}
+												}}
+											>
+												←
+											</button>
+
+											<input
+												type="number"
+												id="singleWeek"
+												min="1"
+												max="52"
+												value={singleWeek}
+												onChange={(e) => {
+													const value = Math.max(1, Math.min(52, parseInt(e.target.value, 10) || ""));
+													setSingleWeek(value);
+												}}
+											/>
+
+											<button
+												type="button"
+												onClick={() => {
+													const currentWeek = parseInt(singleWeek || "0", 10);
+													if (currentWeek < 52) {
+														setSingleWeek(currentWeek + 1);
+													}
+												}}
+											>
+												→
+											</button>
+										</div>
+									</div>
+
+									<div className="teacherDashboard__filter-group">
 										<label htmlFor="weekStart">Week van</label>
 										<input
 											type="number"
@@ -240,9 +319,14 @@ const TeacherDashboard = () => {
 										<label htmlFor="datum">Jaar</label>
 										<input type="number" id="jaar" name="jaar" value={yearFilter} onChange={(e) => setYearFilter(e.target.value)} />
 									</div>
+									<div className="teacherDashboard__filter-actions">
+										<button type="button" className="navbar__button" onClick={resetFilters}>
+											Reset alle filters
+										</button>
+									</div>
 								</form>
 							</div>
-							<div className="teacherDashboard__table">
+							<div className="teacherDashboard__table"  ref={tableRef}>
 								<table className="teacherDashboard__table-element">
 									<thead>
 										<tr>
@@ -257,7 +341,7 @@ const TeacherDashboard = () => {
 											<th>Groep</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody className="teacherDashboard__table-body">
 										{filteredData.map((student, index) => {
 											const percentage = student.percentage ?? 0;
 											const categorie = getCategorie(percentage);

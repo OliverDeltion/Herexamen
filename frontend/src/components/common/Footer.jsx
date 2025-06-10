@@ -5,24 +5,17 @@ const Footer = () => {
 	return (
 		<footer className="footer">
 			<div className="footer__section">
-				<a href="#">Student</a>
-				<a href="#">Docent</a>
-				<a href="#">Mozartlaan 15</a>
-				<a href="#">8031 AA Zwolle</a>
-				<a href="#">+31 038 850 3000</a>
+				<a href="/Privacybeleid.pdf" target="_blank" rel="noopener noreferrer">Privacybeleid</a>
+                <a href="/Gebruiksvoorwaarden.pdf" target="_blank" rel="noopener noreferrer">Gebruiksvoorwaarden</a>
 			</div>
 
 			<div className="footer__section">
-				<a href="#">Groepen</a>
-				<a href="#">Studenten</a>
-				<a href="#">Importeer Stylesheet</a>
+				<a href="tel:+310388503000">+31 038 850 3000</a>
 			</div>
 
 			<div className="footer__section">
-				<a href="#">Privacybeleid</a>
-				<a href="#">Gebruiksvoorwaarden</a>
-				<a href="#">Cookies</a>
-			</div>
+				<a href="https://www.google.com/maps/place/Mozartlaan+15,+8031+AA+Zwolle">Mozartlaan 15, 8031 AA Zwolle</a>
+            </div>
 		</footer>
 	);
 };

@@ -8,10 +8,10 @@ html, body {
 }
 
  #root {
-   display: flex;
+  display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100%;
+  width: 100% !important;
   max-width: 100%;
   margin: 0;
   font-family: "Segoe UI", sans-serif;
@@ -121,7 +121,4 @@ html, body {
   border: 2px solid var(--primary-blue);
   border-radius: 8px;
   color: var(--black);
-}
-#root {
-  width: 95%;
 }
